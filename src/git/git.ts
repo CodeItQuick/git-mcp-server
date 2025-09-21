@@ -2,5 +2,9 @@
 
 const git = simpleGit();
 
-git.log(undefined, (err) => console.log(err))
+git.log({ "--since": "7 days ago" }, (err) => console.log(err))
     .then(console.log)
+
+export const getNumLogs = () => {
+
+}
