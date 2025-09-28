@@ -1,5 +1,5 @@
-﻿import { Octokit } from "@octokit/rest";
-import { CommitDataRetriever, CommitData } from "../commit-data-adapter";
+﻿import {Octokit} from "@octokit/rest";
+import {CommitData, CommitDataRetriever} from "../commit-data-adapter";
 
 export type IListCommits = Pick<Octokit, 'repos'> & {
     repos: Pick<Octokit['repos'], 'listCommits'>;
@@ -30,6 +30,7 @@ export class GitHubCommitRetriever implements CommitDataRetriever {
 
         console.log(`Starting to fetch commits from ${repository}...`);
 
+        let attemptNum = 0;
         while (hasNextPage) {
             try {
                 console.log(`Fetching page ${page}...`);
@@ -57,15 +58,16 @@ export class GitHubCommitRetriever implements CommitDataRetriever {
                 }
 
             } catch (error: any) {
-                if (error.status === 403 && error.headers && error.headers['x-ratelimit-remaining'] === '0') {
-                    const resetTime = new Date(parseInt(error.headers['x-ratelimit-reset']) * 1000);
-                    const waitTime = resetTime.getTime() - Date.now() + 1000; // Add 1 second buffer
+                if (attemptNum < 2) {
+                    const resetTime = new Date();
                     console.log(`Rate limit exceeded. Waiting until ${resetTime.toISOString()}...`);
-                    await this.delay(waitTime);
+                    await this.delay(this.delayMs);
+                    attemptNum++;
                     continue; // Retry the same page
                 }
                 throw error;
             }
+            attemptNum = 0;
         }
 
         console.log(`Finished fetching. Total commits retrieved: ${allCommits.length}`);

@@ -4,6 +4,7 @@ import {GitHubCommitRetriever} from "../../src/batch-processing/github-commit/gi
 import {OctoKitListCommitterTwo} from "./stubTwoCommits";
 import {OctoKitListCommitterZero} from "./stubZeroCommits";
 import {OctoKitListCommitterMany} from "./stubManyCommits";
+import {OctoKitListCommitterRateLimit} from "./stubRateLimitError";
 
 describe('GitHubCommitRetriever', () => {
     it('when GithubCommitRetriever is injected with a OctoKitListCommitterZero returns zero commits', async () => {
@@ -58,5 +59,15 @@ describe('GitHubCommitRetriever', () => {
             assert.property(commit.commit, 'author', `Commit ${index + 1} should have author`);
             assert.property(commit.commit, 'committer', `Commit ${index + 1} should have committer`);
         });
+    });
+    it('when GithubCommitRetriever is injected with OctoKitListCommitterRateLimit throws rate limit error', async () => {
+        const retriever = new GitHubCommitRetriever('fake-token', 5, OctoKitListCommitterRateLimit);
+
+        try {
+            await retriever.fetchCommits('owner/repo');
+            assert.fail('Expected fetchCommits to throw a rate limit error');
+        } catch (error: any) {
+            assert.include(error.message, 'API rate limit exceeded', 'Error message should mention rate limit');
+        }
     });
 });
