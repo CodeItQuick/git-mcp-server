@@ -56,7 +56,7 @@ export const getFileContent = async (file: { filename: string } | undefined) => 
         return {
             content: [{
                 type: "text",
-                text: `File: ${filename}\nSize: ${fileDoc.size || 'unknown'} bytes\n\n--- Content ---\n${decodedContent}`
+                text: `File: ${filename}\nRepository: ${fileDoc.repository} sha: ${fileDoc.sha}\n\n--- Content ---\n${decodedContent}`
             }]
         };
 

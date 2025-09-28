@@ -23,13 +23,14 @@ export const getPatchLogs = async (file: { filename: string } | undefined ) => {
         }).sort({ date: -1 }).toArray();
 
         const patchLogs = commits.map((commit, idx) => {
-            const shortSha = commit.sha ? commit.sha.substring(0, 7) : 'unknown';
 
             // Find the specific file changes for the requested filename
-            const fileChange = commit.files?.find((f: any) => f.filename === filename);
-            const patchContent = fileChange?.patch || 'No patch data available for this file';
+            const filesChanged = commit.files?.map((f: { filename: string;}) => f.filename).join(', ');
+            const patchContent = commit.files?.map((f: { patch: string; filename: string; status: string; }) =>
+                                        `${f.filename}(${f.status}):\n${f.patch}\n`) || 'No patch data available for this file';
 
-            return `#${idx + 1} (${shortSha}): ${commit.commit_message}\n---\n${patchContent}\n`;
+            return `#${idx + 1} (${commit.sha}): ${commit.commit_message} by ${commit.author} \n --- ${filesChanged} ---` +
+                   `\n---\n${patchContent}\n`;
         });
 
         return {

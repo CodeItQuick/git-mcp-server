@@ -22,7 +22,8 @@ export const getCommitMessageLogs = async (days: { number_days: number } | undef
         }).sort({ date: -1 }).toArray();
 
         const commitLogs = commits.map((commit, idx) =>
-            `#${idx + 1}: ${commit.commit_message} (${commit.stats.additions}+ ${commit.stats.deletions}- changes)`
+            `#${idx + 1}(${commit.sha}): ${commit.commit_message} - ${commit.author} at ${commit.date} for ` +
+            `${commit.files?.map((file: {filename: string;}) => file.filename)?.join(', ')})`
         );
 
         return {
