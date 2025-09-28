@@ -1,6 +1,6 @@
 ﻿import { fetchAndStoreCommits } from './github-retrieval.js';
 
-fetchAndStoreCommits()
+fetchAndStoreCommits("CodeItQuick/CodeItQuick.github.io")
     .then((result: {
         content: {
             type: string;
