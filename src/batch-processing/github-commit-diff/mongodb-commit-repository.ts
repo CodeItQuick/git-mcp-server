@@ -1,7 +1,7 @@
 ﻿// filepath: c:\Users\evano\WebstormProjects\git-mcp-server\src\batch-processing\adapters\mongodb-commit-repository.ts
 
 import { MongoClient } from "mongodb";
-import { CommitRepository, CommitData } from "./commit-data-adapter";
+import { CommitRepository, CommitData } from "../commit-data-adapter";
 
 export class MongoDBCommitRepository implements CommitRepository {
     private mongoUrl: string;

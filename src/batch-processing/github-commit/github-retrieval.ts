@@ -1,6 +1,6 @@
-﻿import { CommitDataRetriever, CommitDataStorage } from "./adapters/commit-data-adapter";
-import { GitHubCommitRetriever } from "./adapters/github-commit-retriever";
-import { MongoDBCommitStorage } from "./adapters/mongodb-commit-storage";
+﻿import { CommitDataRetriever, CommitDataStorage } from "../commit-data-adapter";
+import { GitHubCommitRetriever } from "./github-commit-retriever";
+import { MongoDBCommitStorage } from "./mongodb-commit-storage";
 import dotenv from "dotenv";
 dotenv.config();
 

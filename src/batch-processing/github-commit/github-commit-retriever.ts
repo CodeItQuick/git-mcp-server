@@ -1,7 +1,5 @@
-﻿// filepath: c:\Users\evano\WebstormProjects\git-mcp-server\src\batch-processing\adapters\github-commit-retriever.ts
-
-import { Octokit } from "@octokit/rest";
-import { CommitDataRetriever, CommitData } from "./commit-data-adapter";
+﻿import { Octokit } from "@octokit/rest";
+import { CommitDataRetriever, CommitData } from "../commit-data-adapter";
 
 export class GitHubCommitRetriever implements CommitDataRetriever {
     private octokit: Octokit;

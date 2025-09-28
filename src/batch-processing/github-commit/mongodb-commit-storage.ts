@@ -1,7 +1,5 @@
-﻿// filepath: c:\Users\evano\WebstormProjects\git-mcp-server\src\batch-processing\adapters\mongodb-commit-storage.ts
-
-import { MongoClient } from "mongodb";
-import { CommitDataStorage, CommitData } from "./commit-data-adapter";
+﻿import { MongoClient } from "mongodb";
+import { CommitDataStorage, CommitData } from "../commit-data-adapter";
 
 export class MongoDBCommitStorage implements CommitDataStorage {
     private mongoUrl: string;
