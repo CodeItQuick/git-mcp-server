@@ -41,13 +41,13 @@ A Model Context Protocol (MCP) server that provides Git repository analysis and 
    npm install
    ```
 
-3. **Set up environment variables**
+3. **Set up environment variables**  
    Create a `.env` file in the root directory:
    ```env
    GITHUB_TOKEN=your_github_personal_access_token_here
    ```
 
-4. **Start MongoDB**
+4. **Start MongoDB**  
    Start your mongodb locally, the default connection string has no authentication on it.
 
 5. **Build the project**
