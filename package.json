@@ -2,7 +2,6 @@
   "name": "git-mcp-server",
   "version": "1.0.0",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\"",
     "git-message": "node build/git/git-message-logs-runner.js",
