@@ -4,7 +4,7 @@ const MONGO_URL = "mongodb://localhost:27017/";
 const DB_NAME = "github_data";
 const DIFFS_COLLECTION = "commit_diffs";
 
-export const getPatchLogs = async (days: { number_days: number } | undefined ) => {
+export const getPatchLogs = async (file: { filename: string } | undefined ) => {
     const client = new MongoClient(MONGO_URL);
 
     try {
@@ -12,25 +12,30 @@ export const getPatchLogs = async (days: { number_days: number } | undefined ) =
         const db = client.db(DB_NAME);
         const collection = db.collection(DIFFS_COLLECTION);
 
-        const daysAgo = days?.number_days || 7;
-        const sinceDate = new Date();
-        sinceDate.setDate(sinceDate.getDate() - daysAgo);
+        const filename = file?.filename;
+        if (!filename) {
+            throw new Error("Filename parameter is required");
+        }
 
-        // Query commits from the specified time period
+        // Query commits that modified the specified file
         const commits = await collection.find({
-            date: { $gte: sinceDate.toISOString() }
+            "files.filename": filename
         }).sort({ date: -1 }).toArray();
 
         const patchLogs = commits.map((commit, idx) => {
             const shortSha = commit.sha ? commit.sha.substring(0, 7) : 'unknown';
-            const patchContent = commit.patch || 'No patch data available';
+
+            // Find the specific file changes for the requested filename
+            const fileChange = commit.files?.find((f: any) => f.filename === filename);
+            const patchContent = fileChange?.patch || 'No patch data available for this file';
+
             return `#${idx + 1} (${shortSha}): ${commit.commit_message}\n---\n${patchContent}\n`;
         });
 
         return {
             content: [{
                 type: "text",
-                text: `Patch notes for commits in the past ${daysAgo} days:\n\n` +
+                text: `Patch notes for file "${filename}":\n\n` +
                     patchLogs.join('\n---\n')
             }]
         };
