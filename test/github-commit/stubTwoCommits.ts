@@ -1,6 +1,6 @@
 ﻿import {IListCommits} from "../../src/batch-processing/github-commit/github-commit-retriever";
 
-export const OctoKitListCommitter: IListCommits = {
+export const OctoKitListCommitterTwo: IListCommits = {
     repos: {
         listCommits: (params: {
             owner: string;
