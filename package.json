@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\"",
-    "git": "node build/git/git-runner.js ",
+    "git-message": "node build/git/git-message-logs-runner.js",
+    "git-patch": "node build/git/git-patch-logs-runner.js",
     "batch-processing": "node build/batch-processing/github-retrieval-runner.js ",
     "batch-processing-content": "node build/batch-processing/github-retrieval-content-runner.js ",
     "batch-processing-commit-diff": "node build/batch-processing/github-retrieval-commit-diff-runner.js "

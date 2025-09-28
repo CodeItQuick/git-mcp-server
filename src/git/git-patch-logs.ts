@@ -4,7 +4,7 @@ const MONGO_URL = "mongodb://localhost:27017/";
 const DB_NAME = "github_data";
 const DIFFS_COLLECTION = "commit_diffs";
 
-export const getCommitMessageLogs = async (days: { number_days: number } | undefined ) => {
+export const getPatchLogs = async (days: { number_days: number } | undefined ) => {
     const client = new MongoClient(MONGO_URL);
 
     try {
@@ -21,15 +21,17 @@ export const getCommitMessageLogs = async (days: { number_days: number } | undef
             date: { $gte: sinceDate.toISOString() }
         }).sort({ date: -1 }).toArray();
 
-        const commitLogs = commits.map((commit, idx) =>
-            `#${idx + 1}: ${commit.commit_message} (${commit.stats.additions}+ ${commit.stats.deletions}- changes)`
-        );
+        const patchLogs = commits.map((commit, idx) => {
+            const shortSha = commit.sha ? commit.sha.substring(0, 7) : 'unknown';
+            const patchContent = commit.patch || 'No patch data available';
+            return `#${idx + 1} (${shortSha}): ${commit.commit_message}\n---\n${patchContent}\n`;
+        });
 
         return {
             content: [{
                 type: "text",
-                text: `The following commits have been made in the past ${daysAgo} days: ` +
-                    commitLogs.join(', ')
+                text: `Patch notes for commits in the past ${daysAgo} days:\n\n` +
+                    patchLogs.join('\n---\n')
             }]
         };
 
@@ -38,7 +40,7 @@ export const getCommitMessageLogs = async (days: { number_days: number } | undef
         return {
             content: [{
                 type: "text",
-                text: `Error retrieving commits from MongoDB: ${error}`
+                text: `Error retrieving commit patches from MongoDB: ${error}`
             }]
         };
     } finally {

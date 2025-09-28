@@ -1,7 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
-import { getNumLogs } from "./git/git-message-logs.js";
+import { getCommitMessageLogs } from "./git/git-message-logs.js";
 // Create server instance
 const server = new McpServer({
     name: "git source control mcp server",
@@ -9,7 +9,7 @@ const server = new McpServer({
 });
 server.tool("get-commit-message-logs", "Get git commit message logs for the last number of days", {
     number_days: z.number().int().min(1).max(6 * 30).describe("integer number of days to retrieve, defaults to seven")
-}, (params) => getNumLogs(params));
+}, (params) => getCommitMessageLogs(params));
 // server.tool(
 //     "get-alerts",
 //     "Get weather alerts for a state",

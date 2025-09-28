@@ -1,4 +1,4 @@
-﻿import {getNumLogs} from "./git-message-logs.js";
+﻿import {getCommitMessageLogs} from "./git-message-logs.js";
 
 
-getNumLogs({ number_days: 60}).then((result) => console.log(JSON.stringify(result)))
+getCommitMessageLogs({ number_days: 60}).then((result) => console.log(JSON.stringify(result)))
