@@ -2,6 +2,8 @@
 import {StdioServerTransport} from "@modelcontextprotocol/sdk/server/stdio.js";
 import {z} from "zod";
 import {getCommitMessageLogs} from "./git/git-message-logs.js";
+import {getPatchLogs} from "./git/git-patch-logs.js";
+import {getDirectoryLogs} from "./git/git-directory-logs.js";
 
 // Create server instance
 const server = new McpServer({
@@ -15,6 +17,22 @@ server.tool(
         number_days: z.number().int().min(1).max(6 * 30).describe("integer number of days to retrieve, defaults to seven")
     },
     (params) => getCommitMessageLogs(params) as Promise<any>
+)
+server.tool(
+    "get-commit-patch-logs",
+    "Get git commit patch logs for a particular file",
+    {
+        filename: z.string().describe("path and filename to search for the commit patch logs")
+    },
+    (params) => getPatchLogs(params) as Promise<any>
+)
+server.tool(
+    "get-directory-filenames",
+    "Get project files within a directory for the project",
+    {
+        directory: z.string().describe("path of the files to retrieve. Empty string represents the root directory.")
+    },
+    (params) => getDirectoryLogs(params) as Promise<any>
 )
 // server.tool(
 //     "get-alerts",
