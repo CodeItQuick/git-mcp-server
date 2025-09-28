@@ -1,12 +1,16 @@
 ﻿import { Octokit } from "@octokit/rest";
 import { CommitDataRetriever, CommitData } from "../commit-data-adapter";
 
+export type IListCommits = Pick<Octokit, 'repos'> & {
+    repos: Pick<Octokit['repos'], 'listCommits'>;
+};
+
 export class GitHubCommitRetriever implements CommitDataRetriever {
-    private octokit: Octokit;
+    private octokit: IListCommits;
     private delayMs: number;
 
-    constructor(githubToken: string, delayMs: number = 1200) {
-        this.octokit = new Octokit({ auth: githubToken });
+    constructor(githubToken: string, delayMs: number = 1200, octokit?: IListCommits) {
+        this.octokit = octokit || new Octokit({auth: githubToken});
         this.delayMs = delayMs;
     }
 
