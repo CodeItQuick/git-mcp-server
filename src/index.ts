@@ -4,6 +4,7 @@ import {z} from "zod";
 import {getCommitMessageLogs} from "./git/git-message-logs.js";
 import {getPatchLogs} from "./git/git-patch-logs.js";
 import {getDirectoryLogs} from "./git/git-directory-logs.js";
+import {getFileContent} from "./git/git-file-content";
 
 // Create server instance
 const server = new McpServer({
@@ -33,6 +34,14 @@ server.tool(
         directory: z.string().describe("path of the files to retrieve. Empty string represents the root directory.")
     },
     (params) => getDirectoryLogs(params) as Promise<any>
+)
+server.tool(
+    "get-file-content",
+    "Get a files current content",
+    {
+        filename: z.string().describe("path of the file to retrieve the content for")
+    },
+    (params) => getFileContent(params) as Promise<any>
 )
 // server.tool(
 //     "get-alerts",
