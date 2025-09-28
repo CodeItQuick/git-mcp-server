@@ -24,9 +24,7 @@ export const getDirectoryLogs = async (dir: { directory: string } | undefined ) 
         }).sort({ path: 1 }).toArray();
 
         const fileLogs = files.map((file, idx) => {
-            const fileSize = file.size ? `(${file.size} bytes)` : '';
-
-            return `#${idx + 1}: ${file.name} ${fileSize}`;
+            return `#${idx + 1}: ${file.name}`;
         });
 
         const directoryDisplay = directory || "root";
