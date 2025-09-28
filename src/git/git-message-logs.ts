@@ -4,7 +4,8 @@ const MONGO_URL = "mongodb://localhost:27017/";
 const DB_NAME = "github_data";
 const DIFFS_COLLECTION = "commit_diffs";
 
-export const getCommitMessageLogs = async (days: { number_days: number } | undefined ) => {
+export const getCommitMessageLogs = async (days: { number_days: number
+        repository: 'CodeItQuick/CodeItQuick.github.io' | 'CodeItQuick/blackjack-ensemble-blue' } | undefined ) => {
     const client = new MongoClient(MONGO_URL);
 
     try {
@@ -19,7 +20,7 @@ export const getCommitMessageLogs = async (days: { number_days: number } | undef
         // Query commits from the specified time period
         const commits = await collection.find({
             date: { $gte: sinceDate.toISOString() },
-            repository: "CodeItQuick/blackjack-ensemble-blue"
+            repository: days?.repository
         }).sort({ date: -1 }).toArray();
 
         const commitLogs = commits.map((commit, idx) =>

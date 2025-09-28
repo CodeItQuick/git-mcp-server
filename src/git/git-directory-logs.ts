@@ -4,8 +4,17 @@ const MONGO_URL = "mongodb://localhost:27017/";
 const DB_NAME = "github_data";
 const CONTENT_COLLECTION = "repository_content";
 
-export const getDirectoryLogs = async (dir: { directory: string } | undefined ) => {
+export const getDirectoryLogs = async (dir: { directory: string,
+    repository: 'CodeItQuick/CodeItQuick.github.io' | 'CodeItQuick/blackjack-ensemble-blue' } | undefined ) => {
     const client = new MongoClient(MONGO_URL);
+    if (dir?.repository === undefined) {
+        return {
+            content: [{
+                type: "text",
+                text: `Error retrieving repository context from undefined`
+            }]
+        };
+    }
 
     try {
         await client.connect();
@@ -21,7 +30,7 @@ export const getDirectoryLogs = async (dir: { directory: string } | undefined ) 
         const files = await collection.find({
             path: { $regex: directoryPattern },
             type: "file",
-            repository: "CodeItQuick/blackjack-ensemble-blue"
+            repository: dir?.repository
         }).sort({ path: 1 }).toArray();
 
         const fileLogs = files.map((file, idx) => {

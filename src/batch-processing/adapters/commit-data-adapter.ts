@@ -35,3 +35,32 @@ export interface CommitDataRetriever {
 export interface CommitDataStorage {
     storeCommits(commits: CommitData[], repository: string): Promise<void>;
 }
+
+export interface CommitDiff {
+    sha: string;
+    repository: string;
+    commit_message: string;
+    author: string;
+    date: string;
+    files: any[];
+    stats: {
+        additions: number;
+        deletions: number;
+        total: number;
+    };
+    patch?: string;
+    fetched_at?: Date;
+}
+
+export interface CommitDiffRetriever {
+    fetchCommitDiff(sha: string, repository: string): Promise<CommitDiff | null>;
+}
+
+export interface CommitDiffStorage {
+    storeCommitDiffs(diffs: CommitDiff[], repository: string): Promise<void>;
+    clearCommitDiffs(repository: string): Promise<void>;
+}
+
+export interface CommitRepository {
+    getCommits(repository: string): Promise<CommitData[]>;
+}

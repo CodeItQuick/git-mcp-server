@@ -5,7 +5,6 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // Configuration - can be made environment-based
-const REPOSITORY = process.env.REPOSITORY || "CodeItQuick/CodeItQuick.github.io";
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN_REPOSITORY || process.env.DEFAULT_GITHUB_TOKEN;
 const RATE_LIMIT_DELAY = parseInt(process.env.RATE_LIMIT_DELAY || "1200");
 
@@ -22,7 +21,7 @@ const createCommitStorage = (): CommitDataStorage => {
 };
 
 export const fetchAndStoreCommits = async (repository?: string) => {
-    let repo = REPOSITORY;
+    let repo = undefined;
     if (repository === "CodeItQuick/CodeItQuick.github.io") {
         repo = "CodeItQuick/CodeItQuick.github.io";
     } else if (repository === "CodeItQuick/blackjack-ensemble-blue") {

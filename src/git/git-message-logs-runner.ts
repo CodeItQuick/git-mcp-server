@@ -1,4 +1,4 @@
 ﻿import {getCommitMessageLogs} from "./git-message-logs.js";
 
 
-getCommitMessageLogs({ number_days: 365}).then((result) => console.log(JSON.stringify(result)))
+getCommitMessageLogs({ number_days: 365, repository: "CodeItQuick/blackjack-ensemble-blue"}).then((result) => console.log(JSON.stringify(result)))

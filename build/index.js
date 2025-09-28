@@ -13,40 +13,25 @@ const server = new mcp_js_1.McpServer({
     version: "1.0.0",
 });
 server.tool("get-commit-message-logs", "Get git commit message logs for the last number of days. Gives general information on the commit messages.", {
-    number_days: zod_1.z.number().int().min(1).max(36 * 31).describe("integer number of days to retrieve, defaults to seven")
+    number_days: zod_1.z.number().int().min(1).max(36 * 31).describe("integer number of days to retrieve, defaults to seven"),
+    repository: zod_1.z.enum(['CodeItQuick/CodeItQuick.github.io', 'CodeItQuick/blackjack-ensemble-blue'])
+        .describe("the repository which is either 'CodeItQuick/CodeItQuick.github.io' or 'CodeItQuick/blackjack-ensemble-blue'")
 }, (params) => (0, git_message_logs_js_1.getCommitMessageLogs)(params));
 server.tool("get-commit-patch-logs", "Get git commit patch logs for a particular file. Gives patch notes, number of lines, filenames of changed code, sha.", {
-    filename: zod_1.z.string().describe("path and filename to search for the commit patch logs")
+    filename: zod_1.z.string().describe("path and filename to search for the commit patch logs"),
+    repository: zod_1.z.enum(['CodeItQuick/CodeItQuick.github.io', 'CodeItQuick/blackjack-ensemble-blue'])
+        .describe("the repository which is either 'CodeItQuick/CodeItQuick.github.io' or 'CodeItQuick/blackjack-ensemble-blue'")
 }, (params) => (0, git_patch_logs_js_1.getPatchLogs)(params));
 server.tool("get-directory-filenames", "Get project files within a directory for the project", {
-    directory: zod_1.z.string().describe("path of the files to retrieve. Empty string represents the root directory.")
+    directory: zod_1.z.string().describe("path of the files to retrieve. Empty string represents the root directory."),
+    repository: zod_1.z.enum(['CodeItQuick/CodeItQuick.github.io', 'CodeItQuick/blackjack-ensemble-blue'])
+        .describe("the repository which is either 'CodeItQuick/CodeItQuick.github.io' or 'CodeItQuick/blackjack-ensemble-blue'")
 }, (params) => (0, git_directory_logs_js_1.getDirectoryLogs)(params));
 server.tool("get-file-content", "Get a files current content", {
-    filename: zod_1.z.string().describe("path of the file to retrieve the content for")
+    filename: zod_1.z.string().describe("path of the file to retrieve the content for"),
+    repository: zod_1.z.enum(['CodeItQuick/CodeItQuick.github.io', 'CodeItQuick/blackjack-ensemble-blue'])
+        .describe("the repository which is either 'CodeItQuick/CodeItQuick.github.io' or 'CodeItQuick/blackjack-ensemble-blue'")
 }, (params) => (0, git_file_content_1.getFileContent)(params));
-// server.tool(
-//     "get-alerts",
-//     "Get weather alerts for a state",
-//     {
-//         state: z.string().length(2).describe("Two-letter state code (e.g. CA, NY)"),
-//     },
-//     (params) => getAlerts(params) as Promise<any>,
-// );
-//
-//
-// server.tool(
-//     "get-forecast",
-//     "Get weather forecast for a location",
-//     {
-//         latitude: z.number().min(-90).max(90).describe("Latitude of the location"),
-//         longitude: z
-//             .number()
-//             .min(-180)
-//             .max(180)
-//             .describe("Longitude of the location"),
-//     },
-//     (params) => getForecast(params) as Promise<any>,
-// );
 // Start the server
 async function main() {
     const transport = new stdio_js_1.StdioServerTransport();

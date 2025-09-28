@@ -4,8 +4,17 @@ const MONGO_URL = "mongodb://localhost:27017/";
 const DB_NAME = "github_data";
 const CONTENT_COLLECTION = "repository_content";
 
-export const getFileContent = async (file: { filename: string } | undefined) => {
+export const getFileContent = async (file: { filename: string
+        repository: 'CodeItQuick/CodeItQuick.github.io' | 'CodeItQuick/blackjack-ensemble-blue' } | undefined) => {
     const client = new MongoClient(MONGO_URL);
+    if (file?.repository === undefined) {
+        return {
+            content: [{
+                type: "text",
+                text: `Error retrieving repository context from undefined`
+            }]
+        };
+    }
 
     try {
         await client.connect();
@@ -26,7 +35,7 @@ export const getFileContent = async (file: { filename: string } | undefined) => 
         const fileDoc = await collection.findOne({
             path: filename,
             type: "file",
-            repository: "CodeItQuick/blackjack-ensemble-blue"
+            repository: file.repository
         });
 
         if (!fileDoc) {

@@ -15,7 +15,9 @@ server.tool(
     "get-commit-message-logs",
     "Get git commit message logs for the last number of days. Gives general information on the commit messages.",
     {
-        number_days: z.number().int().min(1).max(36 * 31).describe("integer number of days to retrieve, defaults to seven")
+        number_days: z.number().int().min(1).max(36 * 31).describe("integer number of days to retrieve, defaults to seven"),
+        repository: z.enum(['CodeItQuick/CodeItQuick.github.io', 'CodeItQuick/blackjack-ensemble-blue'])
+            .describe("the repository which is either 'CodeItQuick/CodeItQuick.github.io' or 'CodeItQuick/blackjack-ensemble-blue'")
     },
     (params) => getCommitMessageLogs(params) as Promise<any>
 )
@@ -23,7 +25,9 @@ server.tool(
     "get-commit-patch-logs",
     "Get git commit patch logs for a particular file. Gives patch notes, number of lines, filenames of changed code, sha.",
     {
-        filename: z.string().describe("path and filename to search for the commit patch logs")
+        filename: z.string().describe("path and filename to search for the commit patch logs"),
+        repository: z.enum(['CodeItQuick/CodeItQuick.github.io', 'CodeItQuick/blackjack-ensemble-blue'])
+            .describe("the repository which is either 'CodeItQuick/CodeItQuick.github.io' or 'CodeItQuick/blackjack-ensemble-blue'")
     },
     (params) => getPatchLogs(params) as Promise<any>
 )
@@ -31,7 +35,9 @@ server.tool(
     "get-directory-filenames",
     "Get project files within a directory for the project",
     {
-        directory: z.string().describe("path of the files to retrieve. Empty string represents the root directory.")
+        directory: z.string().describe("path of the files to retrieve. Empty string represents the root directory."),
+        repository: z.enum(['CodeItQuick/CodeItQuick.github.io', 'CodeItQuick/blackjack-ensemble-blue'])
+            .describe("the repository which is either 'CodeItQuick/CodeItQuick.github.io' or 'CodeItQuick/blackjack-ensemble-blue'")
     },
     (params) => getDirectoryLogs(params) as Promise<any>
 )
@@ -39,33 +45,12 @@ server.tool(
     "get-file-content",
     "Get a files current content",
     {
-        filename: z.string().describe("path of the file to retrieve the content for")
+        filename: z.string().describe("path of the file to retrieve the content for"),
+        repository: z.enum(['CodeItQuick/CodeItQuick.github.io', 'CodeItQuick/blackjack-ensemble-blue'])
+            .describe("the repository which is either 'CodeItQuick/CodeItQuick.github.io' or 'CodeItQuick/blackjack-ensemble-blue'")
     },
     (params) => getFileContent(params) as Promise<any>
 )
-// server.tool(
-//     "get-alerts",
-//     "Get weather alerts for a state",
-//     {
-//         state: z.string().length(2).describe("Two-letter state code (e.g. CA, NY)"),
-//     },
-//     (params) => getAlerts(params) as Promise<any>,
-// );
-//
-//
-// server.tool(
-//     "get-forecast",
-//     "Get weather forecast for a location",
-//     {
-//         latitude: z.number().min(-90).max(90).describe("Latitude of the location"),
-//         longitude: z
-//             .number()
-//             .min(-180)
-//             .max(180)
-//             .describe("Longitude of the location"),
-//     },
-//     (params) => getForecast(params) as Promise<any>,
-// );
 
 // Start the server
 async function main() {
