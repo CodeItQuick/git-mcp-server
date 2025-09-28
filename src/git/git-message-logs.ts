@@ -18,7 +18,8 @@ export const getCommitMessageLogs = async (days: { number_days: number } | undef
 
         // Query commits from the specified time period
         const commits = await collection.find({
-            date: { $gte: sinceDate.toISOString() }
+            date: { $gte: sinceDate.toISOString() },
+            repository: "CodeItQuick/blackjack-ensemble-blue"
         }).sort({ date: -1 }).toArray();
 
         const commitLogs = commits.map((commit, idx) =>

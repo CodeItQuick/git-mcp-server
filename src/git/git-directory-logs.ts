@@ -20,7 +20,8 @@ export const getDirectoryLogs = async (dir: { directory: string } | undefined ) 
 
         const files = await collection.find({
             path: { $regex: directoryPattern },
-            type: "file"
+            type: "file",
+            repository: "CodeItQuick/blackjack-ensemble-blue"
         }).sort({ path: 1 }).toArray();
 
         const fileLogs = files.map((file, idx) => {

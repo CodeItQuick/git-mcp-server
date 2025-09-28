@@ -12,10 +12,10 @@ const server = new mcp_js_1.McpServer({
     name: "git source control mcp server",
     version: "1.0.0",
 });
-server.tool("get-commit-message-logs", "Get git commit message logs for the last number of days", {
-    number_days: zod_1.z.number().int().min(1).max(6 * 30).describe("integer number of days to retrieve, defaults to seven")
+server.tool("get-commit-message-logs", "Get git commit message logs for the last number of days. Gives general information on the commit messages.", {
+    number_days: zod_1.z.number().int().min(1).max(36 * 31).describe("integer number of days to retrieve, defaults to seven")
 }, (params) => (0, git_message_logs_js_1.getCommitMessageLogs)(params));
-server.tool("get-commit-patch-logs", "Get git commit patch logs for a particular file", {
+server.tool("get-commit-patch-logs", "Get git commit patch logs for a particular file. Gives patch notes, number of lines, filenames of changed code, sha.", {
     filename: zod_1.z.string().describe("path and filename to search for the commit patch logs")
 }, (params) => (0, git_patch_logs_js_1.getPatchLogs)(params));
 server.tool("get-directory-filenames", "Get project files within a directory for the project", {

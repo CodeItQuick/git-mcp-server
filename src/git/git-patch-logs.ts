@@ -19,15 +19,16 @@ export const getPatchLogs = async (file: { filename: string } | undefined ) => {
 
         // Query commits that modified the specified file
         const commits = await collection.find({
-            "files.filename": filename
+            "files.filename": filename,
+            repository: "CodeItQuick/blackjack-ensemble-blue"
         }).sort({ date: -1 }).toArray();
 
         const patchLogs = commits.map((commit, idx) => {
 
             // Find the specific file changes for the requested filename
             const filesChanged = commit.files?.map((f: { filename: string;}) => f.filename).join(', ');
-            const patchContent = commit.files?.map((f: { patch: string; filename: string; status: string; sha: string; }) =>
-                                        `${f.filename}(${f.status})(file_sha: ${f.sha}):\n${f.patch}\n`) || 'No patch data available for this file';
+            const patchContent = commit.files?.map((f: { patch: string; filename: string; status: string; sha: string; additions: number; deletions: number; }) =>
+                                        `${f.filename}(${f.status})(file_sha: ${f.sha})(+${f.additions}-${f.deletions}):\n${f.patch}\n`) || 'No patch data available for this file';
 
             return `#${idx + 1} (commit_sha: ${commit.sha}): ${commit.commit_message} by ${commit.author} \n --- ${filesChanged} ---` +
                    `\n---\n${patchContent}\n`;

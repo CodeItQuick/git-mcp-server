@@ -27,7 +27,7 @@ interface CommitDiff {
 }
 
 export const fetchAndStoreCommitDiffs = async () => {
-    const repo = "CodeItQuick/CodeItQuick.github.io";
+    const repo = "CodeItQuick/blackjack-ensemble-blue";
     // Read token from environment
     const githubToken = process.env.GITHUB_TOKEN;
     if (!githubToken) throw new Error("GITHUB_TOKEN not found in environment");

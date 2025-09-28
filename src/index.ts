@@ -13,15 +13,15 @@ const server = new McpServer({
 });
 server.tool(
     "get-commit-message-logs",
-    "Get git commit message logs for the last number of days",
+    "Get git commit message logs for the last number of days. Gives general information on the commit messages.",
     {
-        number_days: z.number().int().min(1).max(6 * 30).describe("integer number of days to retrieve, defaults to seven")
+        number_days: z.number().int().min(1).max(36 * 31).describe("integer number of days to retrieve, defaults to seven")
     },
     (params) => getCommitMessageLogs(params) as Promise<any>
 )
 server.tool(
     "get-commit-patch-logs",
-    "Get git commit patch logs for a particular file",
+    "Get git commit patch logs for a particular file. Gives patch notes, number of lines, filenames of changed code, sha.",
     {
         filename: z.string().describe("path and filename to search for the commit patch logs")
     },

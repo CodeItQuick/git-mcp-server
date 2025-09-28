@@ -25,7 +25,8 @@ export const getFileContent = async (file: { filename: string } | undefined) => 
         // Find the file by path (filename)
         const fileDoc = await collection.findOne({
             path: filename,
-            type: "file"
+            type: "file",
+            repository: "CodeItQuick/blackjack-ensemble-blue"
         });
 
         if (!fileDoc) {
