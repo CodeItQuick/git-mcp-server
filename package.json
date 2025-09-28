@@ -2,9 +2,13 @@
   "name": "git-mcp-server",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\"",
-    "git": "node build/git/git.js  "
+    "git": "node build/git/git-runner.js ",
+    "batch-processing": "node build/batch-processing/github-retrieval-runner.js ",
+    "batch-processing-content": "node build/batch-processing/github-retrieval-content-runner.js ",
+    "batch-processing-commit-diff": "node build/batch-processing/github-retrieval-commit-diff-runner.js "
   },
   "keywords": [],
   "author": "",
@@ -17,6 +21,9 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.4.0",
+    "@octokit/rest": "^22.0.0",
+    "dotenv": "^17.2.2",
+    "mongodb": "6.19",
     "simple-git": "^3.28.0"
   }
 }

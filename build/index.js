@@ -1,30 +1,43 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const mcp_js_1 = require("@modelcontextprotocol/sdk/server/mcp.js");
-const stdio_js_1 = require("@modelcontextprotocol/sdk/server/stdio.js");
-const zod_1 = require("zod");
-const weather_1 = require("./weather/weather");
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { z } from "zod";
+import { getNumLogs } from "./git/git.js";
 // Create server instance
-const server = new mcp_js_1.McpServer({
-    name: "weather",
+const server = new McpServer({
+    name: "git source control mcp server",
     version: "1.0.0",
 });
-server.tool("get-alerts", "Get weather alerts for a state", {
-    state: zod_1.z.string().length(2).describe("Two-letter state code (e.g. CA, NY)"),
-}, (params) => (0, weather_1.getAlerts)(params));
-server.tool("get-forecast", "Get weather forecast for a location", {
-    latitude: zod_1.z.number().min(-90).max(90).describe("Latitude of the location"),
-    longitude: zod_1.z
-        .number()
-        .min(-180)
-        .max(180)
-        .describe("Longitude of the location"),
-}, (params) => (0, weather_1.getForecast)(params));
+server.tool("get-num-logs", "Get git commit logs for the last number of days", {
+    number_days: z.number().int().min(1).max(6 * 30).describe("integer number of days to retrieve, defaults to seven")
+}, (params) => getNumLogs(params));
+// server.tool(
+//     "get-alerts",
+//     "Get weather alerts for a state",
+//     {
+//         state: z.string().length(2).describe("Two-letter state code (e.g. CA, NY)"),
+//     },
+//     (params) => getAlerts(params) as Promise<any>,
+// );
+//
+//
+// server.tool(
+//     "get-forecast",
+//     "Get weather forecast for a location",
+//     {
+//         latitude: z.number().min(-90).max(90).describe("Latitude of the location"),
+//         longitude: z
+//             .number()
+//             .min(-180)
+//             .max(180)
+//             .describe("Longitude of the location"),
+//     },
+//     (params) => getForecast(params) as Promise<any>,
+// );
 // Start the server
 async function main() {
-    const transport = new stdio_js_1.StdioServerTransport();
+    const transport = new StdioServerTransport();
     await server.connect(transport);
-    console.error("Weather MCP Server running on stdio");
+    console.error("Git Source Control MCP Server running on stdio");
 }
 main().catch((error) => {
     console.error("Fatal error in main():", error);
