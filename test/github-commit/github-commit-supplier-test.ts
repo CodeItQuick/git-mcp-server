@@ -6,8 +6,8 @@ import {OctoKitListCommitterZero} from "./GitHubCommitRetrieverStubs/stubZeroCom
 import {OctoKitListCommitterMany} from "./GitHubCommitRetrieverStubs/stubManyCommits";
 import {OctoKitListCommitterRateLimit} from "./GitHubCommitRetrieverStubs/stubRateLimitError";
 
-describe('GitHubCommitRetriever', () => {
-    it('when GithubCommitRetriever is injected with a OctoKitListCommitterZero returns zero commits', async () => {
+describe('GithubCommitSupplier', () => {
+    it('when GithubCommitSupplier is injected with a OctoKitListCommitterZero returns zero commits', async () => {
         // Arrange
         const retriever = new GithubCommitSupplier('fake-token', 0, OctoKitListCommitterZero);
 
@@ -19,7 +19,7 @@ describe('GitHubCommitRetriever', () => {
         assert.isArray(commits, 'Should return an array');
         assert.isEmpty(commits, 'Array should be empty');
     });
-    it('when GithubCommitRetriever is injected with a OctoKitListCommitter returns two commits', async () => {
+    it('when GithubCommitSupplier is injected with a OctoKitListCommitter returns two commits', async () => {
         // Arrange
         const retriever = new GithubCommitSupplier('fake-token', 0, OctoKitListCommitterTwo);
 
@@ -36,7 +36,7 @@ describe('GitHubCommitRetriever', () => {
         assert.equal(commits[1].commit.message, 'Fix: Update dependency versions and resolve security issues', 'Second commit message should match');
         assert.equal(commits[1].commit.author.name, 'Jane Smith', 'Second commit author should match');
     });
-    it('when GithubCommitRetriever is injected with a OctoKitListCommitterMany returns five commits', async () => {
+    it('when GithubCommitSupplier is injected with a OctoKitListCommitterMany returns five commits', async () => {
         const retriever = new GithubCommitSupplier('fake-token', 0, OctoKitListCommitterMany);
 
         const commits = await retriever.fetchCommits('owner/repo');
@@ -60,7 +60,7 @@ describe('GitHubCommitRetriever', () => {
             assert.property(commit.commit, 'committer', `Commit ${index + 1} should have committer`);
         });
     });
-    it('when GithubCommitRetriever is injected with OctoKitListCommitterRateLimit throws rate limit error', async () => {
+    it('when GithubCommitSupplier is injected with OctoKitListCommitterRateLimit throws rate limit error', async () => {
         const retriever = new GithubCommitSupplier('fake-token', 5, OctoKitListCommitterRateLimit);
 
         try {
