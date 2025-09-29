@@ -1,6 +1,6 @@
 ﻿import {describe, it} from 'mocha';
 import {assert} from 'chai';
-import {fetchAndStoreCommits} from "../../src/batch-processing/github-commit/github-retrieval";
+import {fetchAndStoreCommits} from "../../src/batch-processing/github-commit/fetch-and-store-commits";
 import {OctoKitListCommitterTwo} from "./GitHubCommitRetrieverStubs/stubTwoCommits";
 import {GithubCommitSupplier} from "../../src/batch-processing/github-commit/github-commit-supplier";
 import {MongoDBCommitStorage} from "../../src/batch-processing/github-commit/mongodb-commit-storage";

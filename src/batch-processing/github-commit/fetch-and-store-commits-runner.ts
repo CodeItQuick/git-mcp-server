@@ -1,4 +1,4 @@
-﻿import { fetchAndStoreCommits } from './github-retrieval.js';
+﻿import { fetchAndStoreCommits } from './fetch-and-store-commits';
 
 fetchAndStoreCommits("CodeItQuick/CodeItQuick.github.io")
     .then((result: {
