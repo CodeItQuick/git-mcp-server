@@ -3,19 +3,33 @@
 import { MongoClient } from "mongodb";
 import {CommitDiffStorage, CommitDiff, CommitData} from "../commit-data-adapter";
 
+export interface IDatabase {
+    collection(collectionName: string): {
+        deleteMany: (filter: any) => Promise<any>;
+        insertMany: (docs: any[]) => Promise<any>;
+        find: (param: { repository: string }) => Promise<CommitDiff[]>;
+    };
+}
+
+export interface IDeleteInsertMany {
+    connect(): Promise<void>;
+    db(dbName: string): IDatabase;
+    close(): Promise<void>;
+}
+
 export class MongoDBCommitDiffStorage implements CommitDiffStorage {
     private mongoUrl: string;
     private dbName: string;
     private collectionName: string;
     private batchSize: number;
-    private client: MongoClient;
+    private client: IDeleteInsertMany;
 
     constructor(
         mongoUrl: string = "mongodb://localhost:27017/",
         dbName: string = "github_data",
         collectionName: string = "commit_diffs",
         batchSize: number = 50,
-        client: MongoClient = new MongoClient("mongodb://localhost:27017/")
+        client: IDeleteInsertMany = new MongoClient("mongodb://localhost:27017/") as unknown as IDeleteInsertMany
     ) {
         this.mongoUrl = mongoUrl;
         this.dbName = dbName;
@@ -62,31 +76,22 @@ export class MongoDBCommitDiffStorage implements CommitDiffStorage {
         }
     }
 
-    async getCommits(repository: string): Promise<CommitData[]> {
-        const client = new MongoClient(this.mongoUrl);
+    async getCommits(repository: string): Promise<CommitDiff[]> {
 
         try {
-            await client.connect();
-            const db = client.db(this.dbName);
+            await this.client.connect();
+            const db = this.client.db(this.dbName);
             const collection = db.collection(this.collectionName);
 
-            const commits = await collection.find({ repository: repository }).toArray();
+            const commits: CommitDiff[] = await collection.find({ repository: repository });
             console.log(`Found ${commits.length} commits in database for ${repository}`);
 
-            return commits.map(commit => ({
-                sha: commit.sha,
-                commit: commit.commit,
-                author: commit.author,
-                committer: commit.committer,
-                html_url: commit.html_url,
-                repository: commit.repository,
-                fetched_at: commit.fetched_at
-            }));
+            return commits;
 
         } catch (error) {
-            throw new Error(`MongoDB retrieval error: ${error}`);
+            return Promise.reject(Error(`MongoDB retrieval error: ${error}`));
         } finally {
-            await client.close();
+            await this.client.close();
         }
     }
 }
