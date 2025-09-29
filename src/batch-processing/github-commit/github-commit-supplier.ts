@@ -5,7 +5,7 @@ export type IListCommits = Pick<Octokit, 'repos'> & {
     repos: Pick<Octokit['repos'], 'listCommits'>;
 };
 
-export class GitHubCommitRetriever implements CommitDataRetriever {
+export class GithubCommitSupplier implements CommitDataRetriever {
     private octokit: IListCommits;
     private delayMs: number;
 

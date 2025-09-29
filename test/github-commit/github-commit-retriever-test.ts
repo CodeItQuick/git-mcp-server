@@ -1,6 +1,6 @@
 ﻿import {describe, it} from 'mocha';
 import {assert} from 'chai';
-import {GitHubCommitRetriever} from "../../src/batch-processing/github-commit/github-commit-retriever";
+import {GithubCommitSupplier} from "../../src/batch-processing/github-commit/github-commit-supplier";
 import {OctoKitListCommitterTwo} from "./GitHubCommitRetrieverStubs/stubTwoCommits";
 import {OctoKitListCommitterZero} from "./GitHubCommitRetrieverStubs/stubZeroCommits";
 import {OctoKitListCommitterMany} from "./GitHubCommitRetrieverStubs/stubManyCommits";
@@ -9,7 +9,7 @@ import {OctoKitListCommitterRateLimit} from "./GitHubCommitRetrieverStubs/stubRa
 describe('GitHubCommitRetriever', () => {
     it('when GithubCommitRetriever is injected with a OctoKitListCommitterZero returns zero commits', async () => {
         // Arrange
-        const retriever = new GitHubCommitRetriever('fake-token', 0, OctoKitListCommitterZero);
+        const retriever = new GithubCommitSupplier('fake-token', 0, OctoKitListCommitterZero);
 
         // Act
         const commits = await retriever.fetchCommits('owner/repo');
@@ -21,7 +21,7 @@ describe('GitHubCommitRetriever', () => {
     });
     it('when GithubCommitRetriever is injected with a OctoKitListCommitter returns two commits', async () => {
         // Arrange
-        const retriever = new GitHubCommitRetriever('fake-token', 0, OctoKitListCommitterTwo);
+        const retriever = new GithubCommitSupplier('fake-token', 0, OctoKitListCommitterTwo);
 
         // Act
         const commits = await retriever.fetchCommits('owner/repo');
@@ -37,7 +37,7 @@ describe('GitHubCommitRetriever', () => {
         assert.equal(commits[1].commit.author.name, 'Jane Smith', 'Second commit author should match');
     });
     it('when GithubCommitRetriever is injected with a OctoKitListCommitterMany returns five commits', async () => {
-        const retriever = new GitHubCommitRetriever('fake-token', 0, OctoKitListCommitterMany);
+        const retriever = new GithubCommitSupplier('fake-token', 0, OctoKitListCommitterMany);
 
         const commits = await retriever.fetchCommits('owner/repo');
 
@@ -61,7 +61,7 @@ describe('GitHubCommitRetriever', () => {
         });
     });
     it('when GithubCommitRetriever is injected with OctoKitListCommitterRateLimit throws rate limit error', async () => {
-        const retriever = new GitHubCommitRetriever('fake-token', 5, OctoKitListCommitterRateLimit);
+        const retriever = new GithubCommitSupplier('fake-token', 5, OctoKitListCommitterRateLimit);
 
         try {
             await retriever.fetchCommits('owner/repo');

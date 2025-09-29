@@ -1,54 +1,15 @@
-﻿import { describe, it } from 'mocha';
-import { assert } from 'chai';
-import { fetchAndStoreCommits } from "../../src/batch-processing/github-commit/github-retrieval";
-import { OctoKitListCommitterTwo } from "./GitHubCommitRetrieverStubs/stubTwoCommits";
-import { GitHubCommitRetriever } from "../../src/batch-processing/github-commit/github-commit-retriever";
-import { IDatabase, IDeleteInsertMany, MongoDBCommitStorage } from "../../src/batch-processing/github-commit/mongodb-commit-storage";
-import { CommitDataStorage } from "../../src/batch-processing/commit-data-adapter";
-
-// Mock storage that simulates successful storage
-class TestableDeleteInsertMany implements IDeleteInsertMany {
-    private storedCommits: any[] = [];
-
-    async connect(): Promise<void> {
-        // Mock successful connection
-        console.log("Mock: Connected to MongoDB");
-    }
-
-    db(dbName: string): IDatabase {
-        return {
-            collection: (collectionName: string) => ({
-                deleteMany: async (filter: any) => {
-                    // Mock successful deletion
-                    this.storedCommits = [];
-                    console.log(`Mock: Deleted documents with filter:`, filter);
-                    return { deletedCount: 1 };
-                },
-                insertMany: async (docs: any[]) => {
-                    // Mock successful insertion and store the commits for verification
-                    this.storedCommits = [...docs];
-                    console.log(`Mock: Inserted ${docs.length} documents`);
-                    return { insertedCount: docs.length };
-                }
-            })
-        };
-    }
-
-    async close(): Promise<void> {
-        // Mock successful connection close
-        console.log("Mock: Closed MongoDB connection");
-    }
-
-    // Helper method for testing - get stored commits
-    getStoredCommits(): any[] {
-        return this.storedCommits;
-    }
-}
+﻿import {describe, it} from 'mocha';
+import {assert} from 'chai';
+import {fetchAndStoreCommits} from "../../src/batch-processing/github-commit/github-retrieval";
+import {OctoKitListCommitterTwo} from "./GitHubCommitRetrieverStubs/stubTwoCommits";
+import {GithubCommitSupplier} from "../../src/batch-processing/github-commit/github-commit-supplier";
+import {MongoDBCommitStorage} from "../../src/batch-processing/github-commit/mongodb-commit-storage";
+import {TestableDeleteInsertMany} from "./MongoClientStubs/testable-delete-insert-many";
 
 describe('github-retrieval', () => {
     it('when fetchAndStoreCommits is called with valid repository and mocked dependencies returns success message', async () => {
         // Arrange
-        const mockRetriever = new GitHubCommitRetriever('fake-token', 0, OctoKitListCommitterTwo);
+        const mockRetriever = new GithubCommitSupplier('fake-token', 0, OctoKitListCommitterTwo);
         const mockMongoClient = new TestableDeleteInsertMany();
         const mongoDbCommitStorage = new MongoDBCommitStorage(mockMongoClient);
 
