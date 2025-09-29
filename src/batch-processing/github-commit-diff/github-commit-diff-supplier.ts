@@ -3,12 +3,16 @@
 import { Octokit } from "@octokit/rest";
 import { CommitDiffRetriever, CommitDiff } from "../commit-data-adapter";
 
+export type IGetCommit = Pick<Octokit, 'repos'> & {
+    repos: Pick<Octokit['repos'], 'getCommit'>;
+};
+
 export class GithubCommitDiffSupplier implements CommitDiffRetriever {
-    private octokit: Octokit;
+    private octokit: IGetCommit;
     private delayMs: number;
 
-    constructor(githubToken: string, delayMs: number = 1200) {
-        this.octokit = new Octokit({ auth: githubToken });
+    constructor(githubToken: string, delayMs: number = 1200, octokit: IGetCommit = new Octokit({auth: process.env.GITHUB_TOKEN})) {
+        this.octokit = octokit;
         this.delayMs = delayMs;
     }
 
@@ -57,17 +61,6 @@ export class GithubCommitDiffSupplier implements CommitDiffRetriever {
             return commitDiff;
 
         } catch (error: any) {
-            if (error.status === 403 && error.headers && error.headers['x-ratelimit-remaining'] === '0') {
-                const resetTime = new Date(parseInt(error.headers['x-ratelimit-reset']) * 1000);
-                const waitTime = resetTime.getTime() - Date.now() + 1000;
-                console.log(`Rate limit exceeded. Waiting until ${resetTime.toISOString()}...`);
-                await this.delay(waitTime);
-                // Retry the request
-                return this.fetchCommitDiff(sha, repository);
-            } else if (error.status === 404) {
-                console.warn(`Commit ${sha.substring(0, 7)} not found (possibly deleted or inaccessible)`);
-                return null;
-            }
             throw error;
         }
     }
