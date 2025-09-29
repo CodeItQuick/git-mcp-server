@@ -6,7 +6,7 @@ import {GithubCommitSupplier} from "../../src/batch-processing/github-commit/git
 import {MongoDBCommitStorage} from "../../src/batch-processing/github-commit/mongodb-commit-storage";
 import {TestableDeleteInsertMany} from "./MongoClientStubs/testable-delete-insert-many";
 
-describe('github-retrieval', () => {
+describe('fetch-and-store-commits', () => {
     it('when fetchAndStoreCommits is called with valid repository and mocked dependencies returns success message', async () => {
         // Arrange
         const mockRetriever = new GithubCommitSupplier('fake-token', 0, OctoKitListCommitterTwo);
