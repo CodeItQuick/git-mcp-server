@@ -2,6 +2,7 @@
 import { GithubContentSupplier } from "./github-content-supplier";
 import { MongoDBContentStorage } from "./mongodb-content-storage";
 import dotenv from "dotenv";
+import {Octokit} from "@octokit/rest";
 dotenv.config();
 
 // Configuration - can be made environment-based
@@ -13,7 +14,7 @@ const createContentRetriever = (): ContentDataRetriever => {
     if (!GITHUB_TOKEN) {
         throw new Error("GITHUB_TOKEN not found in environment");
     }
-    return new GithubContentSupplier(GITHUB_TOKEN, RATE_LIMIT_DELAY);
+    return new GithubContentSupplier(GITHUB_TOKEN, RATE_LIMIT_DELAY, new Octokit({ auth: GITHUB_TOKEN })); // FIXME: GITHUB_TOKEN is broken
 };
 
 const createContentStorage = (): ContentDataStorage => {

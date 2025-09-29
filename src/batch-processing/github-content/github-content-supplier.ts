@@ -1,12 +1,16 @@
 ﻿import { Octokit } from "@octokit/rest";
 import { ContentDataRetriever, FileContent } from "./content-data-adapter";
 
+export type IGetContent = Pick<Octokit, 'repos'> & {
+    repos: Pick<Octokit['repos'], 'getContent'>;
+};
+
 export class GithubContentSupplier implements ContentDataRetriever {
-    private octokit: Octokit;
+    private octokit: IGetContent;
     private delayMs: number;
 
-    constructor(githubToken: string, delayMs: number = 200) {
-        this.octokit = new Octokit({ auth: githubToken });
+    constructor(githubToken: string, delayMs: number = 200, octakit: IGetContent) {
+        this.octokit = octakit;
         this.delayMs = delayMs;
     }
 
@@ -94,13 +98,7 @@ export class GithubContentSupplier implements ContentDataRetriever {
 
             } catch (error: any) {
                 console.error(`Error processing path ${currentPath}: ${error.message}`);
-                if (error.status === 403) {
-                    console.log("Rate limit hit. Waiting 60 seconds before retrying...");
-                    await this.delay(60000);
-                    pathsToProcess.unshift(currentPath); // Re-add to front of queue to retry
-                } else {
-                    throw error;
-                }
+                throw error;
             }
         }
 
