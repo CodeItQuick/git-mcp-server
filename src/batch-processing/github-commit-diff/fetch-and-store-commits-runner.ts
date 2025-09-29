@@ -1,4 +1,4 @@
-﻿import {fetchAndStoreCommitDiffs} from './github-retrieval-commit-diff.js';
+﻿import {fetchAndStoreCommitDiffs} from './fetch-and-store-commits';
 
 fetchAndStoreCommitDiffs("CodeItQuick/CodeItQuick.github.io")
     .then((result: {

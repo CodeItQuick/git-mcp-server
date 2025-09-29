@@ -11,9 +11,9 @@
     "git-patch": "node build/git/git-patch-logs-runner.js",
     "git-directory": "node build/git/git-directory-logs-runner.js",
     "git-file-content": "node build/git/git-file-content-runner.js",
-    "batch-processing": "node build/batch-processing/github-commit/github-retrieval-runner.js ",
-    "batch-processing-content": "node build/batch-processing/github-content/github-retrieval-content-runner.js ",
-    "batch-processing-commit-diff": "node build/batch-processing/github-commit-diff/github-retrieval-commit-diff-runner.js "
+    "batch-processing-github-commit": "node build/batch-processing/github-commit/github-retrieval-runner.js ",
+    "batch-processing-github-content": "node build/batch-processing/github-content/github-retrieval-content-runner.js ",
+    "batch-processing-github-commit-diff": "node build/batch-processing/github-commit-diff/github-retrieval-commit-diff-runner.js "
   },
   "keywords": [],
   "author": "",

@@ -3,7 +3,7 @@
 import { Octokit } from "@octokit/rest";
 import { CommitDiffRetriever, CommitDiff } from "../commit-data-adapter";
 
-export class GitHubCommitDiffRetriever implements CommitDiffRetriever {
+export class GithubCommitDiffSupplier implements CommitDiffRetriever {
     private octokit: Octokit;
     private delayMs: number;
 

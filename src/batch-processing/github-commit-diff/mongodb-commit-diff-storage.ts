@@ -1,7 +1,7 @@
 ﻿// filepath: c:\Users\evano\WebstormProjects\git-mcp-server\src\batch-processing\adapters\mongodb-commit-diff-storage.ts
 
 import { MongoClient } from "mongodb";
-import { CommitDiffStorage, CommitDiff } from "../commit-data-adapter";
+import {CommitDiffStorage, CommitDiff, CommitData} from "../commit-data-adapter";
 
 export class MongoDBCommitDiffStorage implements CommitDiffStorage {
     private mongoUrl: string;
@@ -59,6 +59,34 @@ export class MongoDBCommitDiffStorage implements CommitDiffStorage {
             throw new Error(`MongoDB storage error: ${error}`);
         } finally {
             await this.client.close();
+        }
+    }
+
+    async getCommits(repository: string): Promise<CommitData[]> {
+        const client = new MongoClient(this.mongoUrl);
+
+        try {
+            await client.connect();
+            const db = client.db(this.dbName);
+            const collection = db.collection(this.collectionName);
+
+            const commits = await collection.find({ repository: repository }).toArray();
+            console.log(`Found ${commits.length} commits in database for ${repository}`);
+
+            return commits.map(commit => ({
+                sha: commit.sha,
+                commit: commit.commit,
+                author: commit.author,
+                committer: commit.committer,
+                html_url: commit.html_url,
+                repository: commit.repository,
+                fetched_at: commit.fetched_at
+            }));
+
+        } catch (error) {
+            throw new Error(`MongoDB retrieval error: ${error}`);
+        } finally {
+            await client.close();
         }
     }
 }

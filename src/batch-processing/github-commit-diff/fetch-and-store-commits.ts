@@ -1,7 +1,6 @@
 ﻿import { CommitDiffRetriever, CommitDiffStorage, CommitRepository } from "../commit-data-adapter";
-import { GitHubCommitDiffRetriever } from "./github-commit-diff-retriever";
+import { GithubCommitDiffSupplier } from "./github-commit-diff-supplier";
 import { MongoDBCommitDiffStorage } from "./mongodb-commit-diff-storage";
-import { MongoDBCommitRepository } from "./mongodb-commit-repository";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -10,55 +9,33 @@ const GITHUB_TOKEN = process.env.GITHUB_TOKEN_REPOSITORY || process.env.DEFAULT_
 const RATE_LIMIT_DELAY = parseInt(process.env.RATE_LIMIT_DELAY || "1200");
 const BATCH_SIZE = parseInt(process.env.BATCH_SIZE || "50");
 
-// Factory functions to create adapters
-const createCommitDiffRetriever = (): CommitDiffRetriever => {
-    if (!GITHUB_TOKEN) {
-        throw new Error("GITHUB_TOKEN not found in environment");
-    }
-    return new GitHubCommitDiffRetriever(GITHUB_TOKEN, RATE_LIMIT_DELAY);
-};
-
-const createCommitDiffStorage = (): CommitDiffStorage => {
-    return new MongoDBCommitDiffStorage(undefined, undefined, undefined, BATCH_SIZE);
-};
-
-const createCommitRepository = (): CommitRepository => {
-    return new MongoDBCommitRepository();
-};
-
-export const fetchAndStoreCommitDiffs = async (repository?: string) => {
+export const fetchAndStoreCommitDiffs = async (repositoryName?: string,
+       commitDiffRetriever =
+       new GithubCommitDiffSupplier(GITHUB_TOKEN || '', RATE_LIMIT_DELAY),
+       commitDiffStorage = new MongoDBCommitDiffStorage()) => {
     let repo = undefined;
-    if (repository === "CodeItQuick/CodeItQuick.github.io") {
+    if (repositoryName === "CodeItQuick/CodeItQuick.github.io") {
         repo = "CodeItQuick/CodeItQuick.github.io";
-    } else if (repository === "CodeItQuick/blackjack-ensemble-blue") {
+    } else if (repositoryName === "CodeItQuick/blackjack-ensemble-blue") {
         repo = "CodeItQuick/blackjack-ensemble-blue";
     } else {
         throw new Error("only enabled for two repositories");
     }
-
-    // Create adapter instances
-    const commitRepository = createCommitRepository();
-    const commitDiffRetriever = createCommitDiffRetriever();
-    const commitDiffStorage = createCommitDiffStorage();
+    if (GITHUB_TOKEN === undefined) {
+        throw new Error("GITHUB_TOKEN not found in environment");
+    }
 
     try {
         console.log(`Starting to fetch commit diffs for ${repo}...`);
 
-        // Retrieve commits from database using the repository adapter
-        const commits = await commitRepository.getCommits(repo);
+        // Retrieve commits from database using the repositoryName adapter
+        const commits = await commitDiffStorage.getCommits(repo);
 
-        if (commits.length === 0) {
-            console.log("No commits found in database. Please run github-retrieval first.");
-            return {
-                content: [{
-                    type: "text",
-                    text: "No commits found in database. Please run github-retrieval first."
-                }]
-            };
+        if (commits.length > 0) {
+            // Clear existing diff data for this repositoryName
+            console.log(`Commit diff already store for ${repo}, clearing the storage`)
+            await commitDiffStorage.clearCommitDiffs(repo);
         }
-
-        // Clear existing diff data for this repository
-        await commitDiffStorage.clearCommitDiffs(repo);
 
         let processedDiffs = [];
         let processedCount = 0;

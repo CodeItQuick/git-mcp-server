@@ -59,6 +59,7 @@ export interface CommitDiffRetriever {
 export interface CommitDiffStorage {
     storeCommitDiffs(diffs: CommitDiff[], repository: string): Promise<void>;
     clearCommitDiffs(repository: string): Promise<void>;
+    getCommits(repository: string): Promise<CommitData[]>
 }
 
 export interface CommitRepository {
