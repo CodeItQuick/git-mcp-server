@@ -8,25 +8,26 @@ export class MongoDBCommitDiffStorage implements CommitDiffStorage {
     private dbName: string;
     private collectionName: string;
     private batchSize: number;
+    private client: MongoClient;
 
     constructor(
         mongoUrl: string = "mongodb://localhost:27017/",
         dbName: string = "github_data",
         collectionName: string = "commit_diffs",
-        batchSize: number = 50
+        batchSize: number = 50,
+        client: MongoClient = new MongoClient("mongodb://localhost:27017/")
     ) {
         this.mongoUrl = mongoUrl;
         this.dbName = dbName;
         this.collectionName = collectionName;
         this.batchSize = batchSize;
+        this.client = client;
     }
 
     async clearCommitDiffs(repository: string): Promise<void> {
-        const client = new MongoClient(this.mongoUrl);
-
         try {
-            await client.connect();
-            const db = client.db(this.dbName);
+            await this.client.connect();
+            const db = this.client.db(this.dbName);
             const collection = db.collection(this.collectionName);
 
             await collection.deleteMany({ repository: repository });
@@ -35,18 +36,16 @@ export class MongoDBCommitDiffStorage implements CommitDiffStorage {
         } catch (error) {
             throw new Error(`MongoDB clear error: ${error}`);
         } finally {
-            await client.close();
+            await this.client.close();
         }
     }
 
     async storeCommitDiffs(diffs: CommitDiff[], repository: string): Promise<void> {
         if (diffs.length === 0) return;
 
-        const client = new MongoClient(this.mongoUrl);
-
         try {
-            await client.connect();
-            const db = client.db(this.dbName);
+            await this.client.connect();
+            const db = this.client.db(this.dbName);
             const collection = db.collection(this.collectionName);
 
             // Process in batches to avoid memory issues
@@ -59,7 +58,7 @@ export class MongoDBCommitDiffStorage implements CommitDiffStorage {
         } catch (error) {
             throw new Error(`MongoDB storage error: ${error}`);
         } finally {
-            await client.close();
+            await this.client.close();
         }
     }
 }
