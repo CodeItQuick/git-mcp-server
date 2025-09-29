@@ -1,5 +1,5 @@
 ﻿import { ContentDataRetriever, ContentDataStorage } from "./content-data-adapter";
-import { GitHubContentRetriever } from "./github-content-retriever";
+import { GithubContentSupplier } from "./github-content-supplier";
 import { MongoDBContentStorage } from "./mongodb-content-storage";
 import dotenv from "dotenv";
 dotenv.config();
@@ -13,7 +13,7 @@ const createContentRetriever = (): ContentDataRetriever => {
     if (!GITHUB_TOKEN) {
         throw new Error("GITHUB_TOKEN not found in environment");
     }
-    return new GitHubContentRetriever(GITHUB_TOKEN, RATE_LIMIT_DELAY);
+    return new GithubContentSupplier(GITHUB_TOKEN, RATE_LIMIT_DELAY);
 };
 
 const createContentStorage = (): ContentDataStorage => {

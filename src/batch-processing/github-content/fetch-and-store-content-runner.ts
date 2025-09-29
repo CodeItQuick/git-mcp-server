@@ -1,4 +1,4 @@
-﻿import { fetchAndStoreRepositoryContent } from './github-retrieval-content.js';
+﻿import { fetchAndStoreRepositoryContent } from './fetch-and-store-content';
 
 fetchAndStoreRepositoryContent("CodeItQuick/CodeItQuick.github.io")
     .then((result: {

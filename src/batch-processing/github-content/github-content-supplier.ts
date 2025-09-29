@@ -1,7 +1,7 @@
 ﻿import { Octokit } from "@octokit/rest";
 import { ContentDataRetriever, FileContent } from "./content-data-adapter";
 
-export class GitHubContentRetriever implements ContentDataRetriever {
+export class GithubContentSupplier implements ContentDataRetriever {
     private octokit: Octokit;
     private delayMs: number;
 
