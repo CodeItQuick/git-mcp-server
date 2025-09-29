@@ -1,26 +1,18 @@
-﻿import { CommitDataRetriever, CommitDataStorage } from "../commit-data-adapter";
-import { GitHubCommitRetriever } from "./github-commit-retriever";
+﻿import { GitHubCommitRetriever } from "./github-commit-retriever";
 import { MongoDBCommitStorage } from "./mongodb-commit-storage";
 import dotenv from "dotenv";
 dotenv.config();
 
 // Configuration - can be made environment-based
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN_REPOSITORY || process.env.DEFAULT_GITHUB_TOKEN;
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN_REPOSITORY || process.env.DEFAULT_GITHUB_TOKEN || "";
 const RATE_LIMIT_DELAY = parseInt(process.env.RATE_LIMIT_DELAY || "1200");
 
-// Factory functions to create adapters
-const createCommitRetriever = (): CommitDataRetriever => {
-    if (!GITHUB_TOKEN) {
-        throw new Error("GITHUB_TOKEN not found in environment");
+export const fetchAndStoreCommits = async (
+    repository?: string, commitRetriever = new GitHubCommitRetriever(GITHUB_TOKEN, RATE_LIMIT_DELAY),
+    commitStorage = new MongoDBCommitStorage()) => {
+    if (GITHUB_TOKEN === undefined) {
+        throw new Error("Github token not configured");
     }
-    return new GitHubCommitRetriever(GITHUB_TOKEN, RATE_LIMIT_DELAY);
-};
-
-const createCommitStorage = (): CommitDataStorage => {
-    return new MongoDBCommitStorage();
-};
-
-export const fetchAndStoreCommits = async (repository?: string) => {
     let repo = undefined;
     if (repository === "CodeItQuick/CodeItQuick.github.io") {
         repo = "CodeItQuick/CodeItQuick.github.io";
@@ -29,10 +21,6 @@ export const fetchAndStoreCommits = async (repository?: string) => {
     } else {
         throw new Error("only enabled for two repositories");
     }
-
-    // Create adapter instances
-    const commitRetriever = createCommitRetriever();
-    const commitStorage = createCommitStorage();
 
     try {
         // Fetch commits using the retriever adapter

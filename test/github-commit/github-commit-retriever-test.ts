@@ -1,10 +1,10 @@
 ﻿import {describe, it} from 'mocha';
 import {assert} from 'chai';
 import {GitHubCommitRetriever} from "../../src/batch-processing/github-commit/github-commit-retriever";
-import {OctoKitListCommitterTwo} from "./stubTwoCommits";
-import {OctoKitListCommitterZero} from "./stubZeroCommits";
-import {OctoKitListCommitterMany} from "./stubManyCommits";
-import {OctoKitListCommitterRateLimit} from "./stubRateLimitError";
+import {OctoKitListCommitterTwo} from "./GitHubCommitRetrieverStubs/stubTwoCommits";
+import {OctoKitListCommitterZero} from "./GitHubCommitRetrieverStubs/stubZeroCommits";
+import {OctoKitListCommitterMany} from "./GitHubCommitRetrieverStubs/stubManyCommits";
+import {OctoKitListCommitterRateLimit} from "./GitHubCommitRetrieverStubs/stubRateLimitError";
 
 describe('GitHubCommitRetriever', () => {
     it('when GithubCommitRetriever is injected with a OctoKitListCommitterZero returns zero commits', async () => {

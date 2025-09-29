@@ -1,27 +1,34 @@
 ﻿import { MongoClient } from "mongodb";
 import { CommitDataStorage, CommitData } from "../commit-data-adapter";
 
+export interface IDatabase {
+    collection(collectionName: string): {
+        deleteMany: (filter: any) => Promise<any>;
+        insertMany: (docs: any[]) => Promise<any>;
+    };
+}
+
+export interface IDeleteInsertMany {
+    connect(): Promise<void>;
+    db(dbName: string): IDatabase;
+    close(): Promise<void>;
+}
+
 export class MongoDBCommitStorage implements CommitDataStorage {
-    private mongoUrl: string;
-    private dbName: string;
-    private collectionName: string;
+    private dbName: string = "github_data";
+    private collectionName: string = "commits";
+    private client: IDeleteInsertMany;
 
     constructor(
-        mongoUrl: string = "mongodb://localhost:27017/",
-        dbName: string = "github_data",
-        collectionName: string = "commits"
+        mongoClient: IDeleteInsertMany = new MongoClient("mongodb://localhost:27017/") as unknown as IDeleteInsertMany
     ) {
-        this.mongoUrl = mongoUrl;
-        this.dbName = dbName;
-        this.collectionName = collectionName;
+        this.client = mongoClient;
     }
 
     async storeCommits(commits: CommitData[], repository: string): Promise<void> {
-        const client = new MongoClient(this.mongoUrl);
-
         try {
-            await client.connect();
-            const db = client.db(this.dbName);
+            await this.client.connect();
+            const db = this.client.db(this.dbName);
             const collection = db.collection(this.collectionName);
 
             // Clear existing data for this repository
@@ -42,7 +49,7 @@ export class MongoDBCommitStorage implements CommitDataStorage {
         } catch (error) {
             throw new Error(`MongoDB storage error: ${error}`);
         } finally {
-            await client.close();
+            await this.client.close();
         }
     }
 }
