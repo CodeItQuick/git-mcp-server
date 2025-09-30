@@ -35,24 +35,11 @@ const someFunction = () => {
 Always use this pattern to make mongoclient more testable:
 
 ```ts
-// IMongoClient file
-export interface IDatabase {
-    collection(collectionName: string): {
-        deleteMany: (filter: any) => Promise<any>;
-        insertMany: (docs: any[]) => Promise<any>;
-        find: (param: { repository: string }) => FindCursor;
-    };
-}
-
-export interface IMongoClient {
-    connect(): Promise<void>;
-    db(dbName: string): IDatabase;
-    close(): Promise<void>;
-}
+import { IMongoClient } from "./IMongoClient";
 
 // Current function being tested in separate file
 const someFunction = (client: IMongoClient = new MongoClient("mongodb://localhost:27017/") as unknown as IMongoClient) => {
-    
+
 }
 
 ```

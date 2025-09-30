@@ -1,12 +1,12 @@
 ﻿import { describe, it } from 'mocha';
 import { assert } from 'chai';
 import { getDirectoryLogs } from '../../src/git/git-directory-logs';
-import { TestableDirectoryLogsMongo } from './MongoClientStubs/testable-directory-logs-mongo';
+import { TestableMongoClient } from './MongoClientStubs/testable-mongo-client';
 
 describe('git-directory-logs', () => {
     it('when getDirectoryLogs is called with valid directory and repository returns file listing', async () => {
         // Arrange
-        const mockMongoClient = new TestableDirectoryLogsMongo();
+        const mockMongoClient = new TestableMongoClient();
         const dirInput = {
             directory: 'src',
             repository: 'CodeItQuick/blackjack-ensemble-blue' as const
@@ -29,7 +29,7 @@ describe('git-directory-logs', () => {
 
     it('when getDirectoryLogs is called with undefined repository returns error message', async () => {
         // Arrange
-        const mockMongoClient = new TestableDirectoryLogsMongo();
+        const mockMongoClient = new TestableMongoClient();
         const dirInput = undefined;
 
         // Act
@@ -45,7 +45,7 @@ describe('git-directory-logs', () => {
 
     it('when getDirectoryLogs is called with empty directory returns root directory files', async () => {
         // Arrange
-        const mockMongoClient = new TestableDirectoryLogsMongo();
+        const mockMongoClient = new TestableMongoClient();
         mockMongoClient.setMockFiles([
             {
                 path: "README.md",

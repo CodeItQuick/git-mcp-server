@@ -1,12 +1,12 @@
 ﻿import { describe, it } from 'mocha';
 import { assert } from 'chai';
 import { getFileContent } from '../../src/git/git-file-content';
-import { TestableDirectoryLogsMongo } from './MongoClientStubs/testable-directory-logs-mongo';
+import { TestableMongoClient } from './MongoClientStubs/testable-mongo-client';
 
 describe('git-file-content', () => {
     it('when getFileContent is called with valid filename and repository returns file content', async () => {
         // Arrange
-        const mockMongoClient = new TestableDirectoryLogsMongo();
+        const mockMongoClient = new TestableMongoClient();
         const fileInput = {
             filename: 'src/index.ts',
             repository: 'CodeItQuick/blackjack-ensemble-blue' as const
@@ -28,7 +28,7 @@ describe('git-file-content', () => {
 
     it('when getFileContent is called with undefined repository returns error message', async () => {
         // Arrange
-        const mockMongoClient = new TestableDirectoryLogsMongo();
+        const mockMongoClient = new TestableMongoClient();
         const fileInput = undefined;
 
         // Act
@@ -44,7 +44,7 @@ describe('git-file-content', () => {
 
     it('when getFileContent is called with missing filename returns error message', async () => {
         // Arrange
-        const mockMongoClient = new TestableDirectoryLogsMongo();
+        const mockMongoClient = new TestableMongoClient();
         const fileInput = {
             filename: '',
             repository: 'CodeItQuick/blackjack-ensemble-blue' as const
@@ -63,7 +63,7 @@ describe('git-file-content', () => {
 
     it('when getFileContent is called with non-existent file returns file not found message', async () => {
         // Arrange
-        const mockMongoClient = new TestableDirectoryLogsMongo();
+        const mockMongoClient = new TestableMongoClient();
         const fileInput = {
             filename: 'non-existent-file.ts',
             repository: 'CodeItQuick/blackjack-ensemble-blue' as const
@@ -82,7 +82,7 @@ describe('git-file-content', () => {
 
     it('when getFileContent is called with file that has no content returns empty content', async () => {
         // Arrange
-        const mockMongoClient = new TestableDirectoryLogsMongo();
+        const mockMongoClient = new TestableMongoClient();
         mockMongoClient.setMockFiles([
             {
                 path: "empty-file.ts",
