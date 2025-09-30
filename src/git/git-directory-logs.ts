@@ -1,18 +1,5 @@
 ﻿import {FindCursor, MongoClient} from "mongodb";
-
-export interface IDatabase {
-    collection(collectionName: string): {
-        deleteMany: (filter: any) => Promise<any>;
-        insertMany: (docs: any[]) => Promise<any>;
-        find: (query: any) => FindCursor;
-    };
-}
-
-export interface IMongoClient {
-    connect(): Promise<void>;
-    db(dbName: string): IDatabase;
-    close(): Promise<void>;
-}
+import { IMongoClient } from "./IMongoClient";
 
 export const getDirectoryLogs = async (
     dir: { directory: string, repository: 'CodeItQuick/CodeItQuick.github.io' | 'CodeItQuick/blackjack-ensemble-blue' } | undefined,

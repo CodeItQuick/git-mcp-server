@@ -26,7 +26,7 @@ Never use this format, and refactor it to pattern (A) whenever you see it:
 
 ```ts
 const someFunction = () => {
-    const dependnecy = dependencyInjectedDependency();
+    const dependency = dependencyInjectedDependency();
 }
 ```
 
@@ -35,7 +35,7 @@ const someFunction = () => {
 Always use this pattern to make mongoclient more testable:
 
 ```ts
-
+// IMongoClient file
 export interface IDatabase {
     collection(collectionName: string): {
         deleteMany: (filter: any) => Promise<any>;
@@ -50,6 +50,7 @@ export interface IMongoClient {
     close(): Promise<void>;
 }
 
+// Current function being tested in separate file
 const someFunction = (client: IMongoClient = new MongoClient("mongodb://localhost:27017/") as unknown as IMongoClient) => {
     
 }

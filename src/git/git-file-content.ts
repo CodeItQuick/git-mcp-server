@@ -1,12 +1,13 @@
-﻿import { MongoClient } from "mongodb";
+﻿import { FindCursor, MongoClient } from "mongodb";
+import { IMongoClient } from "./IMongoClient";
 
-const MONGO_URL = "mongodb://localhost:27017/";
-const DB_NAME = "github_data";
-const CONTENT_COLLECTION = "repository_content";
+export const getFileContent = async (
+    file: { filename: string, repository: 'CodeItQuick/CodeItQuick.github.io' | 'CodeItQuick/blackjack-ensemble-blue' } | undefined,
+    client: IMongoClient = new MongoClient("mongodb://localhost:27017/") as unknown as IMongoClient
+) => {
+    const DB_NAME = "github_data";
+    const CONTENT_COLLECTION = "repository_content";
 
-export const getFileContent = async (file: { filename: string
-        repository: 'CodeItQuick/CodeItQuick.github.io' | 'CodeItQuick/blackjack-ensemble-blue' } | undefined) => {
-    const client = new MongoClient(MONGO_URL);
     if (file?.repository === undefined) {
         return {
             content: [{
