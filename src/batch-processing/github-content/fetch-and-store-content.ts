@@ -1,5 +1,4 @@
-﻿import { ContentDataRetriever, ContentDataStorage } from "./content-data-adapter";
-import { GithubContentSupplier } from "./github-content-supplier";
+﻿import { GithubContentSupplier } from "./github-content-supplier";
 import { MongoDBContentStorage } from "./mongodb-content-storage";
 import dotenv from "dotenv";
 import {Octokit} from "@octokit/rest";
@@ -9,21 +8,12 @@ dotenv.config();
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN || process.env.DEFAULT_GITHUB_TOKEN;
 const RATE_LIMIT_DELAY = parseInt(process.env.RATE_LIMIT_DELAY || "200");
 
-// Factory functions to create adapters
-const createContentRetriever = (): ContentDataRetriever => {
-    if (!GITHUB_TOKEN) {
-        throw new Error("GITHUB_TOKEN not found in environment");
-    }
-    return new GithubContentSupplier(GITHUB_TOKEN, RATE_LIMIT_DELAY, new Octokit({ auth: GITHUB_TOKEN })); // FIXME: GITHUB_TOKEN is broken
-};
-
-const createContentStorage = (): ContentDataStorage => {
-    return new MongoDBContentStorage();
-};
-
-export const fetchAndStoreRepositoryContent = async (repository?: string):
+export const fetchAndStoreRepositoryContent = async (
+    repository?: string,
+    contentRetriever = new GithubContentSupplier(GITHUB_TOKEN || '', RATE_LIMIT_DELAY, new Octokit({ auth: GITHUB_TOKEN })),
+    contentStorage = new MongoDBContentStorage()):
     Promise<{ content: { type: "text"; text: string; }[] }> => {
-    let repo = undefined;
+    let repo;
     if (repository === "CodeItQuick/CodeItQuick.github.io") {
         repo = "CodeItQuick/CodeItQuick.github.io";
     } else if (repository === "CodeItQuick/blackjack-ensemble-blue") {
@@ -32,9 +22,9 @@ export const fetchAndStoreRepositoryContent = async (repository?: string):
         repo = "CodeItQuick/blackjack-ensemble-blue"; // Default repository
     }
 
-    // Create adapter instances
-    const contentRetriever = createContentRetriever();
-    const contentStorage = createContentStorage();
+    if (GITHUB_TOKEN === undefined) {
+        throw new Error("No token provided");
+    }
 
     try {
         console.log(`Starting to fetch repository content for ${repo}...`);
