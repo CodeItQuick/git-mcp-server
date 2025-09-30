@@ -1,12 +1,26 @@
-﻿import { MongoClient } from "mongodb";
+﻿import {FindCursor, MongoClient} from "mongodb";
 
-const MONGO_URL = "mongodb://localhost:27017/";
-const DB_NAME = "github_data";
-const CONTENT_COLLECTION = "repository_content";
+export interface IDatabase {
+    collection(collectionName: string): {
+        deleteMany: (filter: any) => Promise<any>;
+        insertMany: (docs: any[]) => Promise<any>;
+        find: (query: any) => FindCursor;
+    };
+}
 
-export const getDirectoryLogs = async (dir: { directory: string,
-    repository: 'CodeItQuick/CodeItQuick.github.io' | 'CodeItQuick/blackjack-ensemble-blue' } | undefined ) => {
-    const client = new MongoClient(MONGO_URL);
+export interface IMongoClient {
+    connect(): Promise<void>;
+    db(dbName: string): IDatabase;
+    close(): Promise<void>;
+}
+
+export const getDirectoryLogs = async (
+    dir: { directory: string, repository: 'CodeItQuick/CodeItQuick.github.io' | 'CodeItQuick/blackjack-ensemble-blue' } | undefined,
+    client: IMongoClient = new MongoClient("mongodb://localhost:27017/") as unknown as IMongoClient
+) => {
+    const DB_NAME = "github_data";
+    const CONTENT_COLLECTION = "repository_content";
+
     if (dir?.repository === undefined) {
         return {
             content: [{
@@ -42,17 +56,14 @@ export const getDirectoryLogs = async (dir: { directory: string,
         return {
             content: [{
                 type: "text",
-                text: `Files in directory "${directoryDisplay}":\n\n` +
-                    (fileLogs.length > 0 ? fileLogs.join('\n') : 'No files found in this directory')
+                text: `Directory: ${directoryDisplay}\nRepository: ${dir?.repository}\nFiles found: ${files.length}\n\n${fileLogs.join('\n')}`
             }]
         };
-
-    } catch (error) {
-        console.error('MongoDB error:', error);
+    } catch (error: any) {
         return {
             content: [{
                 type: "text",
-                text: `Error retrieving directory contents from MongoDB: ${error}`
+                text: `Error retrieving repository context: ${error.message}`
             }]
         };
     } finally {

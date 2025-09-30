@@ -29,3 +29,29 @@ const someFunction = () => {
     const dependnecy = dependencyInjectedDependency();
 }
 ```
+
+# MongoClient Testable Design Pattern
+
+Always use this pattern to make mongoclient more testable:
+
+```ts
+
+export interface IDatabase {
+    collection(collectionName: string): {
+        deleteMany: (filter: any) => Promise<any>;
+        insertMany: (docs: any[]) => Promise<any>;
+        find: (param: { repository: string }) => FindCursor;
+    };
+}
+
+export interface IMongoClient {
+    connect(): Promise<void>;
+    db(dbName: string): IDatabase;
+    close(): Promise<void>;
+}
+
+const someFunction = (client: IMongoClient = new MongoClient("mongodb://localhost:27017/") as unknown as IMongoClient) => {
+    
+}
+
+```
