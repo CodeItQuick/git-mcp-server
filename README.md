@@ -55,6 +55,30 @@ A Model Context Protocol (MCP) server that provides Git repository analysis and 
    npm run build
    ```
 
+6. Install as an MCP server using the following file:
+
+```json
+{
+  "servers": {
+    "git-mcp-server": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "C:\\Users\\evano\\WebstormProjects\\git-mcp-server\\build\\src\\index.js"
+      ]
+    },
+    "ESLint": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "@eslint/mcp@latest"
+      ]
+    }
+  }
+}
+```
+
+
 ## Usage
 
 ### As an MCP Server
