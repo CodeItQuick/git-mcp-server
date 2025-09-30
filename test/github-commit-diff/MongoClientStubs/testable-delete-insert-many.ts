@@ -6,6 +6,7 @@ import {
 } from "../../../src/batch-processing/github-commit-diff/mongodb-commit-diff-storage";
 import * as async_hooks from "node:async_hooks";
 import {CommitDiff} from "../../../src/batch-processing/commit-data-adapter";
+import {FindCursor} from "mongodb";
 
 export class TestableDeleteInsertMany implements IDeleteInsertMany {
     private storedCommits: CommitDiff[] = [{
@@ -84,8 +85,12 @@ export class TestableDeleteInsertMany implements IDeleteInsertMany {
                     console.log(`Mock: Inserted ${docs.length} documents`);
                     return {insertedCount: docs.length};
                 },
-                find: async (params: { repository: string; })=> {
-                    return this.storedCommits;
+                find: (params: { repository: string; })=> {
+                    return {
+                        toArray: () => {
+                            return this.storedCommits;
+                        }
+                    } as unknown as FindCursor;
                 }
             })
         };

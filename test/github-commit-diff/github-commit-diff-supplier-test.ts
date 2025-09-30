@@ -9,7 +9,7 @@ import { OctoKitCommitDiffSupplierRateLimit } from "./GitHubCommitDiffSupplierSt
 describe('GithubCommitDiffSupplier', () => {
     it('when GithubCommitDiffSupplier is injected with OctoKitCommitDiffSupplierZero returns commit diff with no changes', async () => {
         // Arrange
-        const supplier = new GithubCommitDiffSupplier('fake-token', 0, OctoKitCommitDiffSupplierZero);
+        const supplier = new GithubCommitDiffSupplier(0, OctoKitCommitDiffSupplierZero);
 
         // Act
         const commitDiff = await supplier.fetchCommitDiff('test-sha', 'owner/repo');
@@ -25,7 +25,7 @@ describe('GithubCommitDiffSupplier', () => {
 
     it('when GithubCommitDiffSupplier is injected with OctoKitCommitDiffSupplierOne returns single commit diff', async () => {
         // Arrange
-        const supplier = new GithubCommitDiffSupplier('fake-token', 0, OctoKitCommitDiffSupplierOne);
+        const supplier = new GithubCommitDiffSupplier(0, OctoKitCommitDiffSupplierOne);
 
         // Act
         const commitDiff = await supplier.fetchCommitDiff('abc123def456789', 'owner/repo');
@@ -44,7 +44,7 @@ describe('GithubCommitDiffSupplier', () => {
 
     it('when GithubCommitDiffSupplier is injected with OctoKitCommitDiffSupplierMany returns commit diff with multiple files', async () => {
         // Arrange
-        const supplier = new GithubCommitDiffSupplier('fake-token', 0, OctoKitCommitDiffSupplierMany);
+        const supplier = new GithubCommitDiffSupplier(0, OctoKitCommitDiffSupplierMany);
 
         // Act
         const commitDiff = await supplier.fetchCommitDiff('commit1', 'owner/repo');
@@ -68,7 +68,7 @@ describe('GithubCommitDiffSupplier', () => {
 
     it('when GithubCommitDiffSupplier is injected with OctoKitCommitDiffSupplierRateLimit handles rate limit error gracefully', async () => {
         // Arrange
-        const supplier = new GithubCommitDiffSupplier('fake-token', 0, OctoKitCommitDiffSupplierRateLimit);
+        const supplier = new GithubCommitDiffSupplier(0, OctoKitCommitDiffSupplierRateLimit);
 
         // Act & Assert
         try {
@@ -81,7 +81,7 @@ describe('GithubCommitDiffSupplier', () => {
 
     it('when GithubCommitDiffSupplier is called with invalid repository format throws error', async () => {
         // Arrange
-        const supplier = new GithubCommitDiffSupplier('fake-token', 0, OctoKitCommitDiffSupplierOne);
+        const supplier = new GithubCommitDiffSupplier(0, OctoKitCommitDiffSupplierOne);
 
         // Act & Assert
         try {

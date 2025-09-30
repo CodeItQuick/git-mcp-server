@@ -1,16 +1,9 @@
-﻿import { GithubContentSupplier } from "./github-content-supplier";
-import { MongoDBContentStorage } from "./mongodb-content-storage";
-import dotenv from "dotenv";
-import {Octokit} from "@octokit/rest";
-dotenv.config();
-
-// Configuration - can be made environment-based
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN || process.env.DEFAULT_GITHUB_TOKEN;
-const RATE_LIMIT_DELAY = parseInt(process.env.RATE_LIMIT_DELAY || "200");
+﻿import { MongoDBContentStorage } from "./mongodb-content-storage";
+import {ContentDataRetriever} from "./content-data-adapter";
 
 export const fetchAndStoreRepositoryContent = async (
-    repository?: string,
-    contentRetriever = new GithubContentSupplier(GITHUB_TOKEN || '', RATE_LIMIT_DELAY, new Octokit({ auth: GITHUB_TOKEN })),
+    repository: string,
+    contentRetriever: ContentDataRetriever,
     contentStorage = new MongoDBContentStorage()):
     Promise<{ content: { type: "text"; text: string; }[] }> => {
     let repo;
@@ -20,10 +13,6 @@ export const fetchAndStoreRepositoryContent = async (
         repo = "CodeItQuick/blackjack-ensemble-blue";
     } else {
         repo = "CodeItQuick/blackjack-ensemble-blue"; // Default repository
-    }
-
-    if (GITHUB_TOKEN === undefined) {
-        throw new Error("No token provided");
     }
 
     try {

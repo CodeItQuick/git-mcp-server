@@ -1,13 +1,13 @@
 ﻿// filepath: c:\Users\evano\WebstormProjects\git-mcp-server\src\batch-processing\adapters\mongodb-commit-diff-storage.ts
 
-import { MongoClient } from "mongodb";
-import {CommitDiffStorage, CommitDiff, CommitData} from "../commit-data-adapter";
+import {FindCursor, MongoClient} from "mongodb";
+import {CommitDiffStorage, CommitDiff } from "../commit-data-adapter";
 
 export interface IDatabase {
     collection(collectionName: string): {
         deleteMany: (filter: any) => Promise<any>;
         insertMany: (docs: any[]) => Promise<any>;
-        find: (param: { repository: string }) => Promise<CommitDiff[]>;
+        find: (param: { repository: string }) => FindCursor;
     };
 }
 
@@ -18,23 +18,14 @@ export interface IDeleteInsertMany {
 }
 
 export class MongoDBCommitDiffStorage implements CommitDiffStorage {
-    private mongoUrl: string;
-    private dbName: string;
-    private collectionName: string;
-    private batchSize: number;
+    private dbName: string = "github_data";
+    private collectionName: string = "commit_diffs";
+    private batchSize: number = 50;
     private client: IDeleteInsertMany;
 
     constructor(
-        mongoUrl: string = "mongodb://localhost:27017/",
-        dbName: string = "github_data",
-        collectionName: string = "commit_diffs",
-        batchSize: number = 50,
         client: IDeleteInsertMany = new MongoClient("mongodb://localhost:27017/") as unknown as IDeleteInsertMany
     ) {
-        this.mongoUrl = mongoUrl;
-        this.dbName = dbName;
-        this.collectionName = collectionName;
-        this.batchSize = batchSize;
         this.client = client;
     }
 
@@ -81,9 +72,9 @@ export class MongoDBCommitDiffStorage implements CommitDiffStorage {
         try {
             await this.client.connect();
             const db = this.client.db(this.dbName);
-            const collection = db.collection(this.collectionName);
+            const collection = db.collection("commits");
 
-            const commits: CommitDiff[] = await collection.find({ repository: repository });
+            const commits: CommitDiff[] = await collection.find({ repository }).toArray();
             console.log(`Found ${commits.length} commits in database for ${repository}`);
 
             return commits;

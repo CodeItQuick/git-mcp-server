@@ -11,7 +11,7 @@ export class GithubCommitDiffSupplier implements CommitDiffRetriever {
     private octokit: IGetCommit;
     private delayMs: number;
 
-    constructor(githubToken: string, delayMs: number = 1200, octokit: IGetCommit = new Octokit({auth: process.env.GITHUB_TOKEN})) {
+    constructor(delayMs: number = 1200, octokit: IGetCommit) {
         this.octokit = octokit;
         this.delayMs = delayMs;
     }
@@ -61,6 +61,8 @@ export class GithubCommitDiffSupplier implements CommitDiffRetriever {
             return commitDiff;
 
         } catch (error: any) {
+            const backOffDelayMultiplier = 2;
+            await this.delay(this.delayMs * backOffDelayMultiplier);
             throw error;
         }
     }

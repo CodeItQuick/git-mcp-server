@@ -1,18 +1,9 @@
-﻿import { GithubCommitSupplier } from "./github-commit-supplier";
-import { MongoDBCommitStorage } from "./mongodb-commit-storage";
-import dotenv from "dotenv";
-dotenv.config();
-
-// Configuration - can be made environment-based
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN_REPOSITORY || process.env.DEFAULT_GITHUB_TOKEN || "";
-const RATE_LIMIT_DELAY = parseInt(process.env.RATE_LIMIT_DELAY || "1200");
+﻿import { MongoDBCommitStorage } from "./mongodb-commit-storage";
+import {CommitDataRetriever} from "../commit-data-adapter";
 
 export const fetchAndStoreCommits = async (
-    repository?: string, commitRetriever = new GithubCommitSupplier(GITHUB_TOKEN, RATE_LIMIT_DELAY),
+    repository: string, commitRetriever: CommitDataRetriever ,
     commitStorage = new MongoDBCommitStorage()) => {
-    if (GITHUB_TOKEN === undefined) {
-        throw new Error("Github token not configured");
-    }
     let repo = undefined;
     if (repository === "CodeItQuick/CodeItQuick.github.io") {
         repo = "CodeItQuick/CodeItQuick.github.io";

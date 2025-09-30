@@ -10,16 +10,10 @@ import {TestableDeleteInsertMany} from "./MongoClientStubs/testable-delete-inser
 describe('fetch-and-store-commit-diffs', () => {
     it('when fetchAndStoreCommitDiffs is called with valid repository and mocked dependencies returns success message', async () => {
         // Arrange
-        const mockCommitDiffRetriever = new GithubCommitDiffSupplier('fake-token', 0,
+        const mockCommitDiffRetriever = new GithubCommitDiffSupplier( 0,
             OctoKitCommitDiffSupplierOne);
         const mockMongoClient = new TestableDeleteInsertMany();
-        const mongoDBCommitDiffStorage = new MongoDBCommitDiffStorage(
-            "mongodb://localhost:27017/",
-            "github_data",
-            "commit_diffs",
-            50,
-            mockMongoClient
-        );
+        const mongoDBCommitDiffStorage = new MongoDBCommitDiffStorage(mockMongoClient);
 
         // Act
         const result = await fetchAndStoreCommitDiffs(

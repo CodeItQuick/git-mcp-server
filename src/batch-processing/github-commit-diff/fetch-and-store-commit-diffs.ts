@@ -1,6 +1,7 @@
 ﻿import { GithubCommitDiffSupplier } from "./github-commit-diff-supplier";
 import { MongoDBCommitDiffStorage } from "./mongodb-commit-diff-storage";
 import dotenv from "dotenv";
+import {CommitDiffRetriever} from "../commit-data-adapter";
 dotenv.config();
 
 // Configuration - can be made environment-based
@@ -8,9 +9,9 @@ const GITHUB_TOKEN = process.env.GITHUB_TOKEN_REPOSITORY || process.env.DEFAULT_
 const RATE_LIMIT_DELAY = parseInt(process.env.RATE_LIMIT_DELAY || "1200");
 const BATCH_SIZE = parseInt(process.env.BATCH_SIZE || "50");
 
-export const fetchAndStoreCommitDiffs = async (repositoryName?: string,
-       commitDiffRetriever =
-       new GithubCommitDiffSupplier(GITHUB_TOKEN || '', RATE_LIMIT_DELAY),
+export const fetchAndStoreCommitDiffs = async (
+       repositoryName: string,
+       commitDiffRetriever: CommitDiffRetriever,
        commitDiffStorage = new MongoDBCommitDiffStorage()) => {
     let repo = undefined;
     if (repositoryName === "CodeItQuick/CodeItQuick.github.io") {
@@ -20,10 +21,6 @@ export const fetchAndStoreCommitDiffs = async (repositoryName?: string,
     } else {
         throw new Error("only enabled for two repositories");
     }
-    if (GITHUB_TOKEN === undefined) {
-        throw new Error("GITHUB_TOKEN not found in environment");
-    }
-
     try {
         console.log(`Starting to fetch commit diffs for ${repo}...`);
 
