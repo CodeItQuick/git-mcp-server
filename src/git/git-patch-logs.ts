@@ -1,17 +1,26 @@
 ﻿import { MongoClient } from "mongodb";
+import { IMongoClient } from "./IMongoClient";
 
-const MONGO_URL = "mongodb://localhost:27017/";
 const DB_NAME = "github_data";
 const DIFFS_COLLECTION = "commit_diffs";
 
-export const getPatchLogs = async (file: { filename: string
-        repository: 'CodeItQuick/CodeItQuick.github.io' | 'CodeItQuick/blackjack-ensemble-blue' } | undefined ) => {
-    const client = new MongoClient(MONGO_URL);
+export const getPatchLogs = async (
+    file: { filename: string, repository: 'CodeItQuick/CodeItQuick.github.io' | 'CodeItQuick/blackjack-ensemble-blue' } | undefined,
+    client: IMongoClient = new MongoClient("mongodb://localhost:27017/") as unknown as IMongoClient
+) => {
     if (file?.repository === undefined) {
         return {
             content: [{
                 type: "text",
                 text: `Error retrieving repository context from undefined`
+            }]
+        };
+    }
+    if (file?.filename === undefined || file.filename.length === 0) {
+        return {
+            content: [{
+                type: "text",
+                text: `Error retrieving filename context from undefined`
             }]
         };
     }

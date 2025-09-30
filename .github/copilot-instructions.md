@@ -43,3 +43,5 @@ const someFunction = (client: IMongoClient = new MongoClient("mongodb://localhos
 }
 
 ```
+
+Use the `testable-mongo-client.ts` file to test the mongoclient.

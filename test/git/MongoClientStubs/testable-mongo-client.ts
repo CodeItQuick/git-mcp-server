@@ -30,8 +30,22 @@ export class TestableMongoClient implements IMongoClient {
             date: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), // 1 day ago
             repository: "CodeItQuick/blackjack-ensemble-blue",
             files: [
-                { filename: "src/index.ts" },
-                { filename: "src/utils.ts" }
+                {
+                    filename: "src/index.ts",
+                    status: "modified",
+                    sha: "file123",
+                    additions: 5,
+                    deletions: 2,
+                    patch: "@@ -1,3 +1,6 @@\n console.log('Hello World');\n+console.log('New feature added');\n+// Additional functionality\n-// Old comment"
+                },
+                {
+                    filename: "src/utils.ts",
+                    status: "modified",
+                    sha: "file456",
+                    additions: 3,
+                    deletions: 1,
+                    patch: "@@ -1,2 +1,4 @@\n export const utils = () => {};\n+export const newUtil = () => 'helper';\n-// Deprecated function"
+                }
             ]
         },
         {
@@ -41,7 +55,14 @@ export class TestableMongoClient implements IMongoClient {
             date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(), // 3 days ago
             repository: "CodeItQuick/blackjack-ensemble-blue",
             files: [
-                { filename: "src/auth.ts" }
+                {
+                    filename: "src/auth.ts",
+                    status: "added",
+                    sha: "auth789",
+                    additions: 10,
+                    deletions: 0,
+                    patch: "@@ -0,0 +1,10 @@\n+export const authenticate = (user: string) => {\n+  return user === 'admin';\n+};"
+                }
             ]
         }
     ];
@@ -84,11 +105,24 @@ export class TestableMongoClient implements IMongoClient {
                             (!query.path || (query.path.$regex && new RegExp(query.path.$regex).test(file.path)))
                         );
                     } else if (collectionName === "commit_diffs") {
-                        // Handle commit queries for git-message-logs
-                        filteredData = this.mockCommits.filter(commit =>
-                            commit.repository === query.repository &&
-                            (!query.date || (query.date.$gte && commit.date >= query.date.$gte))
-                        );
+                        // Handle commit queries for git-message-logs and git-patch-logs
+                        filteredData = this.mockCommits.filter(commit => {
+                            let matches = commit.repository === query.repository;
+
+                            // Handle date filtering for git-message-logs
+                            if (query.date && query.date.$gte) {
+                                matches = matches && commit.date >= query.date.$gte;
+                            }
+
+                            // Handle file filtering for git-patch-logs
+                            if (query["files.filename"]) {
+                                matches = matches && commit.files?.some((file: any) =>
+                                    file.filename === query["files.filename"]
+                                );
+                            }
+
+                            return matches;
+                        });
                     }
 
                     return {
