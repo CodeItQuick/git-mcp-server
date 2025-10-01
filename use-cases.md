@@ -13,6 +13,10 @@ This document outlines practical use cases for the Git MCP server, demonstrating
 8. [Refactoring Planning](#refactoring-planning)
 9. [Team Collaboration](#team-collaboration)
 10. [Technical Debt Management](#technical-debt-management)
+11. [File Evolution Analysis](#file-evolution-analysis)
+12. [Code Archaeology and Blame Analysis](#code-archaeology-and-blame-analysis)
+13. [Regression Investigation](#regression-investigation)
+14. [Knowledge Transfer and Documentation](#knowledge-transfer-and-documentation)
 
 ## Code Review and Analysis
 
@@ -274,6 +278,110 @@ AI provides prioritized technical debt remediation roadmap
 - Prioritized remediation planning
 - Resource allocation optimization
 - Long-term maintainability improvement
+
+## File Evolution Analysis
+
+### Use Case: Tracking File Changes Over Time
+**Scenario**: A developer wants to understand how a specific file has changed over time to identify potential issues or understand feature evolution.
+
+**MCP Tools Used**:
+- `get-file-content` - View file content at specific commits
+- `get-commit-patch-logs` - Analyze changes made in each commit
+- `get-commit-message-logs` - Review commit messages for context
+
+**Example Workflow**:
+```
+Developer: "How has the login component changed over the last month? I want to ensure recent changes align with our current architecture."
+
+AI uses get-file-content("src/components/Login.js", "2023-08-01") to show file state a month ago
+AI uses get-commit-patch-logs("src/components/Login.js", "2023-08-01..HEAD") to analyze all changes made since
+AI uses get-commit-message-logs("2023-08-01..HEAD") to provide context on why changes were made
+AI highlights key changes and potential areas of concern
+```
+
+**Benefits**:
+- Understands historical context of code changes
+- Identifies potential regressions or issues introduced
+- Aids in code reviews and audits
+- Facilitates knowledge transfer by showing code evolution
+
+## Code Archaeology and Blame Analysis
+
+### Use Case: Investigating Code Ownership and History
+**Scenario**: A developer needs to investigate the history of a particular piece of code to understand its original intent, authorship, and evolution.
+
+**MCP Tools Used**:
+- `get-blame-info` - Identify authorship of each line in a file
+- `get-file-history` - View the complete history of changes to a file
+- `get-commit-message-logs` - Review related commit messages
+
+**Example Workflow**:
+```
+Developer: "I need to understand why a certain approach was taken in the data processing module. Can you provide the code's history and authorship?"
+
+AI uses get-blame-info("src/data/process.js") to show who changed what and when
+AI uses get-file-history("src/data/process.js") to provide a chronological list of changes
+AI uses get-commit-message-logs to give context to the changes made
+AI summarizes the findings, highlighting key contributors and decisions
+```
+
+**Benefits**:
+- Clarifies code ownership and responsibility
+- Aids in understanding complex or legacy code
+- Facilitates targeted communication with original authors
+- Enhances documentation and knowledge bases
+
+## Regression Investigation
+
+### Use Case: Identifying Causes of Regression
+**Scenario**: After a new release, several bugs have been reported. The team needs to quickly identify the changes that might have caused these regressions.
+
+**MCP Tools Used**:
+- `get-commit-message-logs` - Review recent commits for potential culprits
+- `get-commit-patch-logs` - Analyze specific changes in detail
+- `get-file-content` - Review current vs. previous file states
+
+**Example Workflow**:
+```
+Developer: "We have multiple reports of bugs in the checkout process after the last release. Let's find out what changed."
+
+AI uses get-commit-message-logs("HEAD..v1.2.3") to list commits between the last release and HEAD
+AI uses get-commit-patch-logs("src/checkout/") to analyze changes in the checkout module
+AI uses get-file-content("src/checkout/index.js", "v1.2.3") to review the state of the file at the last release
+AI identifies potential regression causes and suggests fixes
+```
+
+**Benefits**:
+- Speeds up regression identification and resolution
+- Provides clear links between changes and reported issues
+- Enhances release validation processes
+- Reduces time spent in root cause analysis
+
+## Knowledge Transfer and Documentation
+
+### Use Case: Enhancing Documentation with Code Insights
+**Scenario**: As part of the development process, automatically update or generate documentation to reflect code changes, improving overall project documentation quality.
+
+**MCP Tools Used**:
+- `get-commit-message-logs` - Identify changes that impact documentation
+- `get-file-content` - Extract relevant code comments and documentation strings
+- `get-directory-filenames` - Locate all documentation files affected by code changes
+
+**Example Workflow**:
+```
+Developer: "Ensure that all changes in the user profile module are reflected in the documentation."
+
+AI uses get-commit-message-logs("src/user/profile/") to find recent changes
+AI uses get-file-content to extract docstring updates and important comments
+AI uses get-directory-filenames("docs/user/") to locate all related documentation files
+AI generates a diff of documentation changes and suggests updates
+```
+
+**Benefits**:
+- Keeps documentation up-to-date with minimal manual effort
+- Improves accuracy and reliability of project documentation
+- Facilitates better onboarding and knowledge transfer
+- Enhances overall code quality and maintainability
 
 ## Advanced Integration Scenarios
 
