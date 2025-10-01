@@ -29,6 +29,8 @@ describe('git-file-history', () => {
         assert.include(result.content[0].text, 'Status: modified', 'Should show the file status');
         assert.include(result.content[0].text, 'Changes: +5 -2', 'Should show additions and deletions');
         assert.include(result.content[0].text, 'Patch Preview:', 'Should show patch preview section');
+        assert.include(result.content[0].text, '@@ -1,3 +1,6 @@', 'Should include actual patch content with line numbers');
+        assert.include(result.content[0].text, `+console.log('New feature added');`, 'Should include added lines from the patch');
     });
 
     it('when getFileHistory is called with undefined repository returns error message', async () => {
