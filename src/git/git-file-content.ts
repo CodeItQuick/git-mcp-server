@@ -1,4 +1,4 @@
-﻿import { FindCursor, MongoClient } from "mongodb";
+﻿import {  MongoClient } from "mongodb";
 import { IMongoClient } from "./IMongoClient";
 
 export const getFileContent = async (

@@ -16,7 +16,7 @@ Never use this format, and refactor it to pattern (A) whenever you see it:
 
 ```ts
 const someFunction = () => {
-    const dependnecy = new dependencyInjectedDependency();
+    const dependency = new dependencyInjectedDependency();
 }
 ```
 

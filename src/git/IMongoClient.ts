@@ -1,6 +1,5 @@
 ﻿import { FindCursor } from "mongodb";
 
-
 export interface IDatabase {
     collection(collectionName: string): {
         deleteMany: (filter: any) => Promise<any>;

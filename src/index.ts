@@ -5,6 +5,7 @@ import {getCommitMessageLogs} from "./git/git-message-logs.js";
 import {getPatchLogs} from "./git/git-patch-logs.js";
 import {getDirectoryLogs} from "./git/git-directory-logs.js";
 import {getFileContent} from "./git/git-file-content";
+import {getFileHistory} from "./git/git-file-history";
 
 // Create server instance
 const server = new McpServer({
@@ -50,6 +51,16 @@ server.tool(
             .describe("the repository which is either 'CodeItQuick/CodeItQuick.github.io' or 'CodeItQuick/blackjack-ensemble-blue'")
     },
     (params) => getFileContent(params) as Promise<any>
+)
+server.tool(
+    "get-file-history",
+    "Get a files past commit history and commit blame",
+    {
+        filename: z.string().describe("path of the file to retrieve the history for"),
+        repository: z.enum(['CodeItQuick/CodeItQuick.github.io', 'CodeItQuick/blackjack-ensemble-blue'])
+            .describe("the repository which is either 'CodeItQuick/CodeItQuick.github.io' or 'CodeItQuick/blackjack-ensemble-blue'")
+    },
+    (params) => getFileHistory(params) as Promise<any>
 )
 
 // Start the server
