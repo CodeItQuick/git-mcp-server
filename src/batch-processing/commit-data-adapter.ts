@@ -29,7 +29,7 @@ export interface CommitData {
 }
 
 export interface CommitDataRetriever {
-    fetchCommits(repository: string): Promise<CommitData[]>;
+    fetchCommits(repository: string, since?: Date, until?: Date): Promise<CommitData[]>;
 }
 
 export interface CommitDataStorage {

@@ -10,7 +10,7 @@ export class MultipleRepositoryMongoDBCommitDiffStorage implements CommitDiffSto
     constructor(
         client: IMongoClient = new MongoClient("mongodb://localhost:27017/") as unknown as IMongoClient,
         dbName: string = "github_data",
-        collectionName: string = "commit_diffs"
+        collectionName: string = "commits"
     ) {
         this.client = client;
         this.dbName = dbName;
@@ -26,7 +26,7 @@ export class MultipleRepositoryMongoDBCommitDiffStorage implements CommitDiffSto
         try {
             await this.client.connect();
             const db = this.client.db(this.dbName);
-            const collection = db.collection(this.collectionName);
+            const collection = db.collection("commit_diffs");
 
             // Add metadata to each diff
             const diffsWithMetadata = diffs.map(diff => ({
@@ -50,7 +50,7 @@ export class MultipleRepositoryMongoDBCommitDiffStorage implements CommitDiffSto
         try {
             await this.client.connect();
             const db = this.client.db(this.dbName);
-            const collection = db.collection(this.collectionName);
+            const collection = db.collection("commit_diffs");
 
             const result = await collection.deleteMany({ repository });
             console.log(`Cleared ${result.deletedCount} existing commit diffs for ${repository}`);
@@ -67,7 +67,7 @@ export class MultipleRepositoryMongoDBCommitDiffStorage implements CommitDiffSto
         try {
             await this.client.connect();
             const db = this.client.db(this.dbName);
-            const commitsCollection = db.collection(this.collectionName);
+            const commitsCollection = db.collection("commits");
 
             const commits = await commitsCollection.find({ repository }).toArray();
 
@@ -93,7 +93,7 @@ export class MultipleRepositoryMongoDBCommitDiffStorage implements CommitDiffSto
         try {
             await this.client.connect();
             const db = this.client.db(this.dbName);
-            const commitsCollection = db.collection("multiple_repository_commits");
+            const commitsCollection = db.collection("commits");
 
             const result: { [repository: string]: CommitDiff[] } = {};
 
