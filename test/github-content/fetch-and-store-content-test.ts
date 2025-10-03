@@ -2,10 +2,10 @@
 import { assert } from 'chai';
 
 import { OctoKitContentSupplierTwo } from "./GitHubContentSupplierStubs/stubTwoContent";
-import { GithubContentSupplier } from "../../src/batch-processing/github-content/github-content-supplier";
-import { MongoDBContentStorage } from "../../src/batch-processing/github-content/mongodb-content-storage";
+import { GithubContentSupplier } from "../../src/batch-processing/single-repository/github-content/github-content-supplier";
+import { MongoDBContentStorage } from "../../src/batch-processing/single-repository/github-content/mongodb-content-storage";
 import { TestableContentDeleteInsertMany } from "./MongoClientStubs/testable-content-delete-insert-many";
-import {fetchAndStoreRepositoryContent} from "../../src/batch-processing/github-content/fetch-and-store-content";
+import {fetchAndStoreRepositoryContent} from "../../src/batch-processing/single-repository/github-content/fetch-and-store-content";
 
 describe('fetch-and-store-content', () => {
     it('when fetchAndStoreRepositoryContent is called with valid repository and mocked dependencies returns success message', async () => {

@@ -1,4 +1,4 @@
-﻿import { IGetCommit } from "../../../src/batch-processing/github-commit-diff/github-commit-diff-supplier";
+﻿import { IGetCommit } from "../../../src/batch-processing/single-repository/github-commit-diff/github-commit-diff-supplier";
 
 export const OctoKitCommitDiffSupplierOne: IGetCommit = {
     repos: {

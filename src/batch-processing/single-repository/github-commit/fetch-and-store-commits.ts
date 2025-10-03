@@ -1,5 +1,5 @@
 ﻿import { MongoDBCommitStorage } from "./mongodb-commit-storage";
-import {CommitDataRetriever} from "../commit-data-adapter";
+import {CommitDataRetriever} from "../../commit-data-adapter";
 
 export const fetchAndStoreCommits = async (
     repository: string, commitRetriever: CommitDataRetriever ,

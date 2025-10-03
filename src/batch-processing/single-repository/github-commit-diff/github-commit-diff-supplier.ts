@@ -1,7 +1,7 @@
 ﻿// filepath: c:\Users\evano\WebstormProjects\git-mcp-server\src\batch-processing\adapters\github-commit-diff-retriever.ts
 
 import { Octokit } from "@octokit/rest";
-import { CommitDiffRetriever, CommitDiff } from "../commit-data-adapter";
+import { CommitDiffRetriever, CommitDiff } from "../../commit-data-adapter";
 
 export type IGetCommit = Pick<Octokit, 'repos'> & {
     repos: Pick<Octokit['repos'], 'getCommit'>;

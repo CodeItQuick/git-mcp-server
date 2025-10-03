@@ -1,5 +1,5 @@
 ﻿import {Octokit} from "@octokit/rest";
-import {CommitData, CommitDataRetriever} from "../commit-data-adapter";
+import {CommitData, CommitDataRetriever} from "../../commit-data-adapter";
 
 export type IListCommits = Pick<Octokit, 'repos'> & {
     repos: Pick<Octokit['repos'], 'listCommits'>;

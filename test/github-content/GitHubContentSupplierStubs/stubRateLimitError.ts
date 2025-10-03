@@ -1,4 +1,4 @@
-﻿import {IGetContent} from "../../../src/batch-processing/github-content/github-content-supplier";
+﻿import {IGetContent} from "../../../src/batch-processing/single-repository/github-content/github-content-supplier";
 
 export const OctoKitContentSupplierRateLimit: IGetContent = {
     repos: {

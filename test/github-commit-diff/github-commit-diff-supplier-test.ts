@@ -1,6 +1,6 @@
 ﻿import { describe, it } from 'mocha';
 import { assert } from 'chai';
-import { GithubCommitDiffSupplier } from "../../src/batch-processing/github-commit-diff/github-commit-diff-supplier";
+import { GithubCommitDiffSupplier } from "../../src/batch-processing/single-repository/github-commit-diff/github-commit-diff-supplier";
 import { OctoKitCommitDiffSupplierZero } from "./GitHubCommitDiffSupplierStubs/stubZeroCommitDiff";
 import { OctoKitCommitDiffSupplierOne } from "./GitHubCommitDiffSupplierStubs/stubOneCommitDiff";
 import { OctoKitCommitDiffSupplierMany } from "./GitHubCommitDiffSupplierStubs/stubManyCommitDiffs";

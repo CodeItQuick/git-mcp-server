@@ -3,7 +3,7 @@
 import {
     IDatabase,
     IDeleteInsertMany
-} from "../../../src/batch-processing/github-commit-diff/mongodb-commit-diff-storage";
+} from "../../../src/batch-processing/single-repository/github-commit-diff/mongodb-commit-diff-storage";
 import * as async_hooks from "node:async_hooks";
 import {CommitDiff} from "../../../src/batch-processing/commit-data-adapter";
 import {FindCursor} from "mongodb";

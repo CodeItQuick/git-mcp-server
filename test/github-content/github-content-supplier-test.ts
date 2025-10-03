@@ -1,6 +1,6 @@
 ﻿import { describe, it } from 'mocha';
 import { assert } from 'chai';
-import { GithubContentSupplier } from "../../src/batch-processing/github-content/github-content-supplier";
+import { GithubContentSupplier } from "../../src/batch-processing/single-repository/github-content/github-content-supplier";
 import { OctoKitContentSupplierZero } from "./GitHubContentSupplierStubs/stubZeroContent";
 import { OctoKitContentSupplierTwo } from "./GitHubContentSupplierStubs/stubTwoContent";
 import { OctoKitContentSupplierMany } from "./GitHubContentSupplierStubs/stubManyContent";

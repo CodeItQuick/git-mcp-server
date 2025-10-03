@@ -1,7 +1,7 @@
 ﻿import { GithubCommitDiffSupplier } from "./github-commit-diff-supplier";
 import { MongoDBCommitDiffStorage } from "./mongodb-commit-diff-storage";
 import dotenv from "dotenv";
-import {CommitDiffRetriever} from "../commit-data-adapter";
+import {CommitDiffRetriever} from "../../commit-data-adapter";
 dotenv.config();
 
 // Configuration - can be made environment-based

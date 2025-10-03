@@ -1,6 +1,6 @@
 ﻿import {describe, it} from 'mocha';
 import {assert} from 'chai';
-import {GithubCommitSupplier} from "../../src/batch-processing/github-commit/github-commit-supplier";
+import {GithubCommitSupplier} from "../../src/batch-processing/single-repository/github-commit/github-commit-supplier";
 import {OctoKitListCommitterTwo} from "./GitHubCommitRetrieverStubs/stubTwoCommits";
 import {OctoKitListCommitterZero} from "./GitHubCommitRetrieverStubs/stubZeroCommits";
 import {OctoKitListCommitterMany} from "./GitHubCommitRetrieverStubs/stubManyCommits";

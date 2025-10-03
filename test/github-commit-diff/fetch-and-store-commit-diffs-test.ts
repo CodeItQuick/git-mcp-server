@@ -1,9 +1,9 @@
 ﻿import { describe, it } from 'mocha';
 import { assert } from 'chai';
-import { fetchAndStoreCommitDiffs } from "../../src/batch-processing/github-commit-diff/fetch-and-store-commit-diffs";
+import { fetchAndStoreCommitDiffs } from "../../src/batch-processing/single-repository/github-commit-diff/fetch-and-store-commit-diffs";
 import { OctoKitCommitDiffSupplierOne } from "./GitHubCommitDiffSupplierStubs/stubOneCommitDiff";
-import { GithubCommitDiffSupplier } from "../../src/batch-processing/github-commit-diff/github-commit-diff-supplier";
-import { MongoDBCommitDiffStorage } from "../../src/batch-processing/github-commit-diff/mongodb-commit-diff-storage";
+import { GithubCommitDiffSupplier } from "../../src/batch-processing/single-repository/github-commit-diff/github-commit-diff-supplier";
+import { MongoDBCommitDiffStorage } from "../../src/batch-processing/single-repository/github-commit-diff/mongodb-commit-diff-storage";
 import {TestableDeleteInsertMany} from "./MongoClientStubs/testable-delete-insert-many";
 
 

@@ -1,7 +1,7 @@
 ﻿// filepath: c:\Users\evano\WebstormProjects\git-mcp-server\src\batch-processing\adapters\mongodb-commit-diff-storage.ts
 
 import {FindCursor, MongoClient} from "mongodb";
-import {CommitDiffStorage, CommitDiff } from "../commit-data-adapter";
+import {CommitDiffStorage, CommitDiff } from "../../commit-data-adapter";
 
 export interface IDatabase {
     collection(collectionName: string): {

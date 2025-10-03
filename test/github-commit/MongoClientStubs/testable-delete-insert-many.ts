@@ -1,5 +1,5 @@
 ﻿// Mock storage that simulates successful storage
-import {IDatabase, IDeleteInsertMany} from "../../../src/batch-processing/github-commit/mongodb-commit-storage";
+import {IDatabase, IDeleteInsertMany} from "../../../src/batch-processing/single-repository/github-commit/mongodb-commit-storage";
 
 export class TestableDeleteInsertMany implements IDeleteInsertMany {
     private storedCommits: any[] = [];

@@ -1,7 +1,7 @@
 ﻿import {
     IDeleteInsertMany,
     IDatabase,
-} from "../../../src/batch-processing/github-content/mongodb-content-storage";
+} from "../../../src/batch-processing/single-repository/github-content/mongodb-content-storage";
 
 export class TestableContentDeleteInsertMany implements IDeleteInsertMany {
     private storedContent: any[] = [];

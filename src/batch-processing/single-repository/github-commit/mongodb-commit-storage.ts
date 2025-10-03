@@ -1,5 +1,5 @@
 ﻿import { MongoClient } from "mongodb";
-import { CommitDataStorage, CommitData } from "../commit-data-adapter";
+import { CommitDataStorage, CommitData } from "../../commit-data-adapter";
 
 export interface IDatabase {
     collection(collectionName: string): {
