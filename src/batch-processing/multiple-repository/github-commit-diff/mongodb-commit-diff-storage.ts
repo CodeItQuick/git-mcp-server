@@ -1,6 +1,6 @@
-﻿import { IMongoClient } from "../../git/IMongoClient";
+﻿import { IMongoClient } from "../../../git/IMongoClient";
 import { MongoClient } from "mongodb";
-import { CommitDiff, CommitDiffStorage } from "../commit-data-adapter";
+import { CommitDiff, CommitDiffStorage } from "../../commit-data-adapter";
 
 export class MultipleRepositoryMongoDBCommitDiffStorage implements CommitDiffStorage {
     private client: IMongoClient;

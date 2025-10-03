@@ -1,20 +1,16 @@
 ﻿import { Octokit } from "@octokit/rest";
-import { CommitDiffRetriever, CommitDiff } from "../commit-data-adapter";
+import { CommitDiffRetriever, CommitDiff } from "../../commit-data-adapter";
 
-export type IGetCommit = Pick<Octokit, 'repos'> & {
-    repos: Pick<Octokit['repos'], 'getCommit'>;
-};
-
-export type IListRepos = Pick<Octokit, 'repos'> & {
-    repos: Pick<Octokit['repos'], 'listForUser'>;
+export type IGetCommitListForUser = Pick<Octokit, 'repos'> & {
+    repos: Pick<Octokit['repos'], 'getCommit'> & Pick<Octokit['repos'], 'listForUser'>;
 };
 
 export class MultipleRepositoryGithubCommitDiffSupplier implements CommitDiffRetriever {
-    private octokit: IGetCommit & IListRepos;
+    private octokit: IGetCommitListForUser;
     private delayMs: number;
     private username: string;
 
-    constructor(githubToken: string, username: string = "CodeItQuick", delayMs: number = 1300, octokit?: IGetCommit & IListRepos) {
+    constructor(githubToken: string, username: string = "CodeItQuick", delayMs: number = 1300, octokit?: IGetCommitListForUser) {
         this.octokit = octokit || new Octokit({ auth: githubToken });
         this.delayMs = delayMs;
         this.username = username;

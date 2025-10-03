@@ -1,6 +1,6 @@
 ﻿import { MultipleRepositoryGithubCommitDiffSupplier } from "./github-commit-diff-supplier";
 import { MultipleRepositoryMongoDBCommitDiffStorage } from "./mongodb-commit-diff-storage";
-import { CommitDiffRetriever } from "../commit-data-adapter";
+import { CommitDiffRetriever } from "../../commit-data-adapter";
 
 export const fetchAndStoreMultipleRepositoryCommitDiffs = async (
     sinceDate: Date,
