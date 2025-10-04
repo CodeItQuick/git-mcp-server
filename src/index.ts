@@ -6,6 +6,7 @@ import {getPatchLogs} from "./git/git-patch-logs.js";
 import {getDirectoryLogs} from "./git/git-directory-logs.js";
 import {getFileContent} from "./git/git-file-content";
 import {getFileHistory} from "./git/git-file-history";
+import {getUserHistory} from "./git/git-user-history";
 
 // Create server instance
 const server = new McpServer({
@@ -61,6 +62,16 @@ server.tool(
             .describe("the repository which is either 'CodeItQuick/CodeItQuick.github.io' or 'CodeItQuick/blackjack-ensemble-blue'")
     },
     (params) => getFileHistory(params) as Promise<any>
+)
+server.tool(
+    "get-user-history",
+    "Get a users past commit history and commit blame on a specific day",
+    {
+        username: z.enum(['CodeItQuick']).describe("the user to search for"),
+        exact_date: z.string()
+            .describe("Day to search for in format YYYY-MM-DD")
+    },
+    (params) => getUserHistory(params) as Promise<any>
 )
 
 // Start the server
