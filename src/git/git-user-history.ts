@@ -58,11 +58,22 @@ export const getUserHistory = async (
 
         const userHistory = commits.map((commit, idx) => {
             const filesChanged = commit.files?.map((f: { filename: string; }) => f.filename).join(', ') || 'No files';
+            // const patchContent = commit.files
+            //     ?.map((f: {
+            //         filename: string;
+            //         status: string;
+            //         sha: string;
+            //         additions: number;
+            //         deletions: number;
+            //         patch: string;
+            //     }) => {
+            //         return `File: ${f.filename} (${f.status}) (file_sha: ${f.sha}) (+${f.additions}/-${f.deletions})\n${f?.patch || 'no patch data'}\n`;
+            //     }).join('\n') || 'No patch data available';
             return `#${idx + 1} (commit_sha: ${commit.sha}): ${commit.commit_message} by ${commit.author} at ${commit.date}\n` +
                    `Repository: ${commit.repository || 'Unknown'}\n` +
                    `Files Changed: ${filesChanged}\n` +
                    `Stats: +${commit.stats?.additions || 0}/-${commit.stats?.deletions || 0} (~${commit.stats?.total || 0} lines)\n`;
-                    // `Patch Content: \n ${patchContent}\n`;
+                   // `Patch Content: \n ${patchContent}\n`;
         });
 
         const summary = `User History for '${username}' across all repositories since ${userQuery.exact_date}:\n` +

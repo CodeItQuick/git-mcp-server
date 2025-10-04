@@ -2,6 +2,9 @@
 import { MultipleRepositoryMongoDBCommitStorage } from "./mongodb-commit-storage";
 import { CommitDataRetriever } from "../../commit-data-adapter";
 
+const delay =  (ms: number): Promise<void> => {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 export const fetchAndStoreMultipleRepositoryCommits = async (
     sinceDate: Date,
     commitRetriever: CommitDataRetriever,
@@ -52,6 +55,8 @@ export const fetchAndStoreMultipleRepositoryCommits = async (
 
                 totalCommitsStored += commits.length;
                 totalRepositoriesProcessed++;
+
+                await delay(1200);
 
                 const repositoryResult = `${repository}: ${commits.length} commits stored`;
                 results.push(repositoryResult);

@@ -22,9 +22,9 @@ const getStartingDate = (): Date => {
         return date;
     }
 
-    // Default to 30 days ago
+    // Default to 365 days ago
     const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 365);
     return thirtyDaysAgo;
 };
 
