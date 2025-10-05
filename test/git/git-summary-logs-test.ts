@@ -12,7 +12,7 @@ describe('git-summary-logs', () => {
                 sha: "commit123",
                 original_message: "Add new feature",
                 summary: "Implemented user authentication with JWT tokens",
-                author: "John Doe",
+                author: "alice",
                 date: new Date('2024-10-02').toISOString(),
                 repository: "CodeItQuick/blackjack-ensemble-blue"
             },
@@ -20,7 +20,7 @@ describe('git-summary-logs', () => {
                 sha: "commit456",
                 original_message: "Fix bug in payment processing",
                 summary: "Fixed null pointer exception in payment handler",
-                author: "Jane Smith",
+                author: "alice",
                 date: new Date('2024-10-03').toISOString(),
                 repository: "CodeItQuick/blackjack-ensemble-blue"
             }
@@ -28,7 +28,8 @@ describe('git-summary-logs', () => {
         const fileInput = {
             repository: 'CodeItQuick/blackjack-ensemble-blue',
             start_date: '2024-10-01',
-            end_date: '2024-10-05'
+            end_date: '2024-10-05',
+            author: 'alice'
         };
 
         // Act
@@ -46,8 +47,7 @@ describe('git-summary-logs', () => {
         assert.include(result.content[0].text, 'Implemented user authentication with JWT tokens', 'Should show first commit summary');
         assert.include(result.content[0].text, 'Fix bug in payment processing', 'Should show second commit message');
         assert.include(result.content[0].text, 'Fixed null pointer exception in payment handler', 'Should show second commit summary');
-        assert.include(result.content[0].text, 'John Doe', 'Should show first author');
-        assert.include(result.content[0].text, 'Jane Smith', 'Should show second author');
+        assert.include(result.content[0].text, 'alice', 'Should show first author');
         assert.include(result.content[0].text, '#Commit Summary #1', 'Should show commit summary numbering');
         assert.include(result.content[0].text, '#Commit Summary #2', 'Should show second commit summary numbering');
     });
@@ -76,7 +76,8 @@ describe('git-summary-logs', () => {
         const fileInput = {
             repository: 'CodeItQuick/blackjack-ensemble-blue',
             start_date: '2024-10-01',
-            end_date: '2024-10-05'
+            end_date: '2024-10-05',
+            author: 'alice'
         };
 
         // Act
@@ -99,7 +100,7 @@ describe('git-summary-logs', () => {
                 sha: "commit123",
                 original_message: "Add new feature",
                 summary: "Implemented user authentication",
-                author: "John Doe",
+                author: "alice",
                 date: new Date('2024-10-02').toISOString(),
                 repository: "CodeItQuick/blackjack-ensemble-blue"
             }
@@ -108,7 +109,8 @@ describe('git-summary-logs', () => {
         const fileInput = {
             repository: 'CodeItQuick/blackjack-ensemble-blue',
             start_date: '2024-10-01',
-            end_date: '2024-10-05'
+            end_date: '2024-10-05',
+            author: 'alice'
         };
 
         // Act
@@ -134,7 +136,8 @@ describe('git-summary-logs', () => {
         const fileInput = {
             repository: 'CodeItQuick/blackjack-ensemble-blue',
             start_date: '2024-10-01',
-            end_date: '2024-10-05'
+            end_date: '2024-10-05',
+            author: 'alice'
         };
 
         // Act
@@ -166,7 +169,7 @@ describe('git-summary-logs', () => {
                 sha: "commit456",
                 original_message: "Middle commit",
                 summary: "Middle changes",
-                author: "Bob",
+                author: "Alice",
                 date: new Date('2024-10-03').toISOString(),
                 repository: "CodeItQuick/blackjack-ensemble-blue"
             },
@@ -174,7 +177,7 @@ describe('git-summary-logs', () => {
                 sha: "commit123",
                 original_message: "Oldest commit",
                 summary: "Initial changes",
-                author: "Charlie",
+                author: "Alice",
                 date: new Date('2024-10-02').toISOString(),
                 repository: "CodeItQuick/blackjack-ensemble-blue"
             }
@@ -182,7 +185,8 @@ describe('git-summary-logs', () => {
         const fileInput = {
             repository: 'CodeItQuick/blackjack-ensemble-blue',
             start_date: '2024-10-01',
-            end_date: '2024-10-05'
+            end_date: '2024-10-05',
+            author: 'Alice'
         };
 
         // Act

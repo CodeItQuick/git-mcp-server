@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // Configuration
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN || process.env.ALL_GITHUB_TOKEN || "";
+const GITHUB_TOKEN = process.env.ALL_GITHUB_TOKEN || "";
 const RATE_LIMIT_DELAY = parseInt(process.env.RATE_LIMIT_DELAY || "1000");
 const BATCH_SIZE = parseInt(process.env.BATCH_SIZE || "10");
 const MAX_COMMITS = parseInt(process.env.MAX_COMMITS || "100");

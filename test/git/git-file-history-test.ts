@@ -22,7 +22,7 @@ describe('git-file-history', () => {
         assert.equal(result.content[0].type, 'text', 'Content type should be text');
         assert.include(result.content[0].text, 'File History for "src/index.ts" in CodeItQuick/blackjack-ensemble-blue:', 'Should show the filename and repository');
         assert.include(result.content[0].text, '#1 Commit: commit123', 'Should show the commit number and SHA');
-        assert.include(result.content[0].text, 'Author: John Doe', 'Should show the author');
+        assert.include(result.content[0].text, 'Author: alice', 'Should show the author');
         assert.include(result.content[0].text, 'Message: Add new feature', 'Should show the commit message');
         assert.include(result.content[0].text, 'All Files Changed: src/index.ts, src/utils.ts', 'Should show all files in the commit');
         assert.include(result.content[0].text, 'File: src/index.ts', 'Should show the specific file details');

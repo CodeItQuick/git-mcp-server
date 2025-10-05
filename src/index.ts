@@ -94,6 +94,7 @@ server.tool(
     {
         start_date: z.string().describe("the start date to query in format YYYY-MM-DD"),
         end_date: z.string().describe("the end date to query in format YYYY-MM-DD"),
+        author: z.string().describe('the author of the commit. Should usually be CodeItQuick.'),
         repository: z.string()
             .describe("the repository starting with 'CodeItQuick/'")
     },

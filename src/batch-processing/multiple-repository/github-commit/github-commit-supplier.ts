@@ -10,7 +10,7 @@ export class MultipleRepositoryGithubCommitSupplier implements CommitDataRetriev
     private delayMs: number;
     private username: string;
 
-    constructor(githubToken: string, username: string = "CodeItQuick", delayMs: number = 1200, octokit?: IGetCommitListForUser) {
+    constructor(githubToken: string, username: string = "CodeItQuick", delayMs: number = 1500, octokit?: IGetCommitListForUser) {
         this.octokit = octokit || new Octokit({ auth: githubToken });
         this.delayMs = delayMs;
         this.username = username;
@@ -47,9 +47,7 @@ export class MultipleRepositoryGithubCommitSupplier implements CommitDataRetriev
                 hasNextPage = repos.length === 100;
                 page++;
 
-                if (hasNextPage) {
-                    await this.delay(this.delayMs);
-                }
+                await this.delay(this.delayMs);
             }
 
             console.log(`Found ${allRepos.length} total repositories for ${this.username}`);
@@ -107,16 +105,13 @@ export class MultipleRepositoryGithubCommitSupplier implements CommitDataRetriev
                 hasNextPage = commits.length === 100;
                 page++;
 
-                // Rate limiting: delay between requests
-                if (hasNextPage) {
-                    console.log(`Waiting ${this.delayMs}ms before next request...`);
-                    await this.delay(this.delayMs);
-                }
+                console.log(`Waiting ${this.delayMs}ms before next request...`);
+                await this.delay(this.delayMs);
 
             } catch (error: any) {
+                await this.delay(this.delayMs * 3);
                 if (attemptNum < 2) {
-                    console.log(`Rate limit exceeded for ${repository}. Waiting ${this.delayMs}ms...`);
-                    await this.delay(this.delayMs);
+                    console.log(`Rate limit exceeded for ${repository}. Waiting ${this.delayMs * 3}ms...`);
                     attemptNum++;
                     continue; // Retry the same page
                 }

@@ -12,7 +12,7 @@ const ENSEMBLE_REPOSITORY = "CodeItQuick/blackjack-ensemble-blue";
 const RATE_LIMIT_DELAY = parseInt(process.env.RATE_LIMIT_DELAY || "1200");
 
 fetchAndStoreCommitDiffs(
-    BLOG_REPOSITORY,
+    "CodeItQuick/CodeItQuick.github.io",
     new GithubCommitDiffSupplier(RATE_LIMIT_DELAY, new Octokit({ auth: BLOG_TOKEN })))
     .then((result: {
         content: {

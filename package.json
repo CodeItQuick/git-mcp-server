@@ -19,7 +19,7 @@
     "batch-processing-github-commit": "node build/src/batch-processing/single-repository/github-commit/fetch-and-store-commits-runner.js ",
     "batch-processing-github-content": "node build/src/batch-processing/single-repository/github-content/fetch-and-store-content-runner.js ",
     "batch-processing-github-commit-diff": "node build/src/batch-processing/single-repository/github-commit-diff/fetch-and-store-commit-diffs-runner.js ",
-    "ai-summaries-github-commit-diff": "node build/src/batch-processing/ai-summaries/github-commit-diff/fetch-and-store-commits-runner.js --maxCommits 1145"
+    "ai-summaries-github-commit-diff": "node build/src/batch-processing/ai-summaries/github-commit-diff/fetch-and-store-commits-runner.js --maxCommits 2000"
   },
   "keywords": [],
   "author": "",

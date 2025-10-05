@@ -7,6 +7,7 @@ export class TestableMongoClient implements IMongoClient {
         {
             path: "src/index.ts",
             type: "file",
+            author: 'alice',
             repository: "CodeItQuick/blackjack-ensemble-blue",
             sha: "abc123",
             name: "index.ts",
@@ -15,6 +16,7 @@ export class TestableMongoClient implements IMongoClient {
         {
             path: "src/utils.ts",
             type: "file",
+            author: 'alice',
             repository: "CodeItQuick/blackjack-ensemble-blue",
             sha: "def456",
             name: "utils.ts",
@@ -26,7 +28,7 @@ export class TestableMongoClient implements IMongoClient {
         {
             sha: "commit123",
             commit_message: "Add new feature",
-            author: "John Doe",
+            author: "alice",
             date: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), // 1 day ago
             repository: "CodeItQuick/blackjack-ensemble-blue",
             files: [
@@ -51,7 +53,7 @@ export class TestableMongoClient implements IMongoClient {
         {
             sha: "commit456",
             commit_message: "Fix bug in authentication",
-            author: "Jane Smith",
+            author: "alice",
             date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(), // 3 days ago
             repository: "CodeItQuick/blackjack-ensemble-blue",
             files: [

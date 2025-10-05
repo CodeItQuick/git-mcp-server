@@ -21,7 +21,7 @@ describe('git-patch-logs', () => {
         assert.equal(result.content.length, 1, 'Content should have exactly one item');
         assert.equal(result.content[0].type, 'text', 'Content type should be text');
         assert.include(result.content[0].text, 'Patch notes for file "src/index.ts":', 'Should show the filename');
-        assert.include(result.content[0].text, '#1 (commit_sha: commit123): Add new feature by John Doe', 'Should show the commit info');
+        assert.include(result.content[0].text, '#1 (commit_sha: commit123): Add new feature by alice', 'Should show the commit info');
         assert.include(result.content[0].text, 'src/index.ts, src/utils.ts', 'Should show all files changed in the commit');
         assert.include(result.content[0].text, 'src/index.ts(modified)(file_sha: file123)(+5-2):', 'Should show file status and changes');
         assert.include(result.content[0].text, 'console.log(\'New feature added\');', 'Should show the patch content');

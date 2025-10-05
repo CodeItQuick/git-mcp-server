@@ -5,7 +5,7 @@ import {CommitDiffRetriever} from "../../commit-data-adapter";
 dotenv.config();
 
 // Configuration - can be made environment-based
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN_REPOSITORY || process.env.DEFAULT_GITHUB_TOKEN;
+const GITHUB_TOKEN =process.env.ALL_GITHUB_TOKEN;
 const RATE_LIMIT_DELAY = parseInt(process.env.RATE_LIMIT_DELAY || "1200");
 const BATCH_SIZE = parseInt(process.env.BATCH_SIZE || "50");
 
@@ -13,14 +13,7 @@ export const fetchAndStoreCommitDiffs = async (
        repositoryName: string,
        commitDiffRetriever: CommitDiffRetriever,
        commitDiffStorage = new MongoDBCommitDiffStorage()) => {
-    let repo = undefined;
-    if (repositoryName === "CodeItQuick/CodeItQuick.github.io") {
-        repo = "CodeItQuick/CodeItQuick.github.io";
-    } else if (repositoryName === "CodeItQuick/blackjack-ensemble-blue") {
-        repo = "CodeItQuick/blackjack-ensemble-blue";
-    } else {
-        throw new Error("only enabled for two repositories");
-    }
+    let repo = repositoryName;
     try {
         console.log(`Starting to fetch commit diffs for ${repo}...`);
 
@@ -28,6 +21,7 @@ export const fetchAndStoreCommitDiffs = async (
         const commits = await commitDiffStorage.getCommits(repo);
 
         if (commits.length > 0) {
+            // throw new Error("CommitDiffs are already present!")
             // Clear existing diff data for this repositoryName
             console.log(`Commit diff already store for ${repo}, clearing the storage`)
             await commitDiffStorage.clearCommitDiffs(repo);
