@@ -7,6 +7,8 @@ import {getDirectoryLogs} from "./git/git-directory-logs.js";
 import {getFileContent} from "./git/git-file-content";
 import {getFileHistory} from "./git/git-file-history";
 import {getUserHistory} from "./git/git-user-history";
+import {getRepositoryHistory} from "./git/git-repository-history";
+import {getSummaryLogs} from "./git/git-summary-logs";
 
 // Create server instance
 const server = new McpServer({
@@ -73,7 +75,28 @@ server.tool(
     },
     (params) => getUserHistory(params) as Promise<any>
 )
+server.tool(
+    "get-repository-history",
+    "Get a users past commit history and commit blame since a day given in YYYY-MM-DD",
+    {
+        username: z.enum(['CodeItQuick']).describe("the user to search for"),
+        since_date: z.string()
+            .describe("Day to search for in format YYYY-MM-DD")
+    },
+    (params) => getRepositoryHistory(params) as Promise<any>
+)
 
+server.tool(
+    "get-summary-repository-logs",
+    "Get AI summary logs for a particular repository given a start date and end date in format YYYY-MM-DD. Gives commit sha, author, date of commit, AI summary, and original commit message.",
+    {
+        start_date: z.string().describe("the start date to query in format YYYY-MM-DD"),
+        end_date: z.string().describe("the end date to query in format YYYY-MM-DD"),
+        repository: z.string()
+            .describe("the repository starting with 'CodeItQuick/'")
+    },
+    (params) => getSummaryLogs(params)
+)
 // Start the server
 async function main() {
     const transport = new StdioServerTransport();
