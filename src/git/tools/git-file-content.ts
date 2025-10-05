@@ -5,7 +5,7 @@ import { CallToolResult } from "@modelcontextprotocol/sdk/types";
 export const getFileContent = async (
     file: { filename: string, repository: string; } | undefined,
     client: IMongoClient = new MongoClient("mongodb://localhost:27017/") as unknown as IMongoClient
-) => {
+): Promise<CallToolResult> => {
     const DB_NAME = "github_data";
     const CONTENT_COLLECTION = "repository_content";
 
@@ -14,7 +14,8 @@ export const getFileContent = async (
             content: [{
                 type: "text",
                 text: `Error retrieving repository context from undefined`
-            }]
+            }],
+            isError: true
         };
     }
 
@@ -29,7 +30,8 @@ export const getFileContent = async (
                 content: [{
                     type: "text",
                     text: "Error: filename parameter is required"
-                }]
+                }],
+                isError: true
             };
         }
 
@@ -60,7 +62,8 @@ export const getFileContent = async (
                     content: [{
                         type: "text",
                         text: `Error decoding file content: ${decodeError}`
-                    }]
+                    }],
+                    isError: true
                 };
             }
         }
@@ -78,7 +81,8 @@ export const getFileContent = async (
             content: [{
                 type: "text",
                 text: `Error retrieving file content from MongoDB: ${error}`
-            }]
+            }],
+            isError: true
         };
     } finally {
         await client.close();

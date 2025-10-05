@@ -5,7 +5,7 @@ import { CallToolResult } from "@modelcontextprotocol/sdk/types";
 export const getDirectoryLogs = async (
     dir: { directory: string, repository: string; } | undefined,
     client: IMongoClient = new MongoClient("mongodb://localhost:27017/") as unknown as IMongoClient
-) => {
+): Promise<CallToolResult> => {
     const DB_NAME = "github_data";
     const CONTENT_COLLECTION = "repository_content";
 
@@ -14,7 +14,8 @@ export const getDirectoryLogs = async (
             content: [{
                 type: "text",
                 text: `Error retrieving repository context from undefined`
-            }]
+            }],
+            isError: true
         };
     }
 
@@ -52,7 +53,8 @@ export const getDirectoryLogs = async (
             content: [{
                 type: "text",
                 text: `Error retrieving repository context: ${error.message}`
-            }]
+            }],
+            isError: true
         };
     } finally {
         await client.close();

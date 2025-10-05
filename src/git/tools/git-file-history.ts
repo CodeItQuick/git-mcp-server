@@ -1,5 +1,6 @@
 ﻿import { MongoClient } from "mongodb";
 import { IMongoClient } from "../IMongoClient";
+import { CallToolResult } from "@modelcontextprotocol/sdk/types";
 
 const DB_NAME = "github_data";
 const DIFFS_COLLECTION = "commit_diffs";
@@ -7,13 +8,14 @@ const DIFFS_COLLECTION = "commit_diffs";
 export const getFileHistory = async (
     file: { filename: string, repository: string; } | undefined,
     client: IMongoClient = new MongoClient("mongodb://localhost:27017/") as unknown as IMongoClient
-) => {
+): Promise<CallToolResult> => {
     if (file?.repository === undefined) {
         return {
             content: [{
                 type: "text",
                 text: `Error retrieving repository context from undefined`
-            }]
+            }],
+            isError: true
         };
     }
 
@@ -28,7 +30,8 @@ export const getFileHistory = async (
                 content: [{
                     type: "text",
                     text: "Error: filename parameter is required"
-                }]
+                }],
+                isError: true
             };
         }
 
@@ -100,7 +103,8 @@ ${fileDetails}`;
             content: [{
                 type: "text",
                 text: `Error retrieving file history from MongoDB: ${error}`
-            }]
+            }],
+            isError: true
         };
     } finally {
         await client.close();

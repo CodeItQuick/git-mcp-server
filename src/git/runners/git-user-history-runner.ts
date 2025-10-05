@@ -9,13 +9,12 @@ const main = async () => {
 Usage: node git-user-history-runner.js [username] [since-date]
 
 Arguments:
-  username     Optional. Username to search for (default: CodeItQuick)
-  since-date   Required. Start date in YYYY-MM-DD format
+  start-date   Required. Start date in YYYY-MM-DD format
+  end-date   Required. End date in YYYY-MM-DD format
 
 Examples:
-  node git-user-history-runner.js CodeItQuick 2024-01-01
   node git-user-history-runner.js 2024-01-01
-  node git-user-history-runner.js "Ted M. Young" 2024-06-01
+  node git-user-history-runner.js 2024-01-01 2024-02-01
 
 Note:
   Searches across all repositories for the specified user's commits.
@@ -23,15 +22,19 @@ Note:
         return;
     }
 
-    let sinceDate: string;
+    let startDate: string, endDate: string;
 
     // Parse arguments - flexible order
     if (args.length === 1) {
         // [since-date] only
-        sinceDate = args[0];
+        startDate = args[0];
+        const tempDate = new Date(args[0])
+        tempDate.setDate(tempDate.getDate() + 7)
+        endDate = tempDate.toISOString();
     } else if (args.length === 2) {
         // [username] [since-date]
-        sinceDate = args[1];
+        startDate = args[1];
+        endDate = args[2];
     } else {
         console.error('Error: Invalid number of arguments. Use --help for usage information.');
         process.exit(1);
@@ -40,7 +43,8 @@ Note:
     try {
         const result = await getUserHistory({
             username: 'CodeItQuick',
-            start_date: sinceDate
+            start_date: startDate,
+            end_date: endDate
         });
 
         console.log(result.content[0].text);

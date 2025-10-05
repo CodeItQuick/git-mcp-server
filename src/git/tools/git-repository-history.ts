@@ -34,7 +34,8 @@ export const getRepositoryHistory = async (
                 content: [{
                     type: "text",
                     text: `Error: Invalid date format '${sinceDate}'. Use format: YYYY-MM-DD`
-                }]
+                }],
+                isError: true
             };
         }
 
@@ -104,7 +105,8 @@ export const getRepositoryHistory = async (
             content: [{
                 type: "text",
                 text: `Error retrieving repository history: ${error}`
-            }]
+            }],
+            isError: true
         };
     } finally {
         await client.close();

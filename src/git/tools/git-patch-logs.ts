@@ -8,13 +8,14 @@ const DIFFS_COLLECTION = "commit_diffs";
 export const getPatchLogs = async (
     file: { filename: string, repository: string; } | undefined,
     client: IMongoClient = new MongoClient("mongodb://localhost:27017/") as unknown as IMongoClient
-) => {
+): Promise<CallToolResult> => {
     if (file?.repository === undefined) {
         return {
             content: [{
                 type: "text",
                 text: `Error retrieving repository context from undefined`
-            }]
+            }],
+            isError: true
         };
     }
     if (file?.filename === undefined || file.filename.length === 0) {
@@ -22,7 +23,8 @@ export const getPatchLogs = async (
             content: [{
                 type: "text",
                 text: `Error retrieving filename context from undefined`
-            }]
+            }],
+            isError: true
         };
     }
 
@@ -67,7 +69,8 @@ export const getPatchLogs = async (
             content: [{
                 type: "text",
                 text: `Error retrieving commit patches from MongoDB: ${error}`
-            }]
+            }],
+            isError: true
         };
     } finally {
         await client.close();

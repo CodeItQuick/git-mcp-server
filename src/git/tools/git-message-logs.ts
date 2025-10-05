@@ -3,9 +3,9 @@ import { IMongoClient } from "../IMongoClient";
 import { CallToolResult } from "@modelcontextprotocol/sdk/types";
 
 export const getCommitMessageLogs = async (
-    days: { number_days: number, repository: 'CodeItQuick/CodeItQuick.github.io' | 'CodeItQuick/blackjack-ensemble-blue' } | undefined,
+    days: { number_days: number, repository: string; } | undefined,
     client: IMongoClient = new MongoClient("mongodb://localhost:27017/") as unknown as IMongoClient
-) => {
+): Promise<CallToolResult> => {
     const DB_NAME = "github_data";
     const DIFFS_COLLECTION = "commit_diffs";
 
@@ -43,7 +43,8 @@ export const getCommitMessageLogs = async (
             content: [{
                 type: "text",
                 text: `Error retrieving commits from MongoDB: ${error}`
-            }]
+            }],
+            isError: true
         };
     } finally {
         await client.close();

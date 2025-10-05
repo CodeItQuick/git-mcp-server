@@ -20,20 +20,20 @@ server.tool(
     "Get git commit message logs for the last number of days. Gives general information on the commit messages.",
     {
         number_days: z.number().int().min(1).max(36 * 31).describe("integer number of days to retrieve, defaults to seven"),
-        repository: z.enum(['CodeItQuick/CodeItQuick.github.io', 'CodeItQuick/blackjack-ensemble-blue'])
-            .describe("the repository which is either 'CodeItQuick/CodeItQuick.github.io' or 'CodeItQuick/blackjack-ensemble-blue'")
+        repository: z.string()
+            .describe("the repository starting with 'CodeItQuick/'")
     },
-    (params) => getCommitMessageLogs(params) as Promise<any>
+    (params) => getCommitMessageLogs(params)
 )
 server.tool(
     "get-commit-patch-logs",
     "Get git commit patch logs for a particular file. Gives patch notes, number of lines, filenames of changed code, sha.",
     {
         filename: z.string().describe("path and filename to search for the commit patch logs"),
-        repository: z.enum(['CodeItQuick/CodeItQuick.github.io', 'CodeItQuick/blackjack-ensemble-blue'])
-            .describe("the repository which is either 'CodeItQuick/CodeItQuick.github.io' or 'CodeItQuick/blackjack-ensemble-blue'")
+        repository: z.string()
+            .describe("the repository starting with 'CodeItQuick/'")
     },
-    (params) => getPatchLogs(params) as Promise<any>
+    (params) => getPatchLogs(params)
 )
 server.tool(
     "get-directory-filenames",
@@ -43,37 +43,39 @@ server.tool(
         repository: z.enum(['CodeItQuick/CodeItQuick.github.io', 'CodeItQuick/blackjack-ensemble-blue'])
             .describe("the repository which is either 'CodeItQuick/CodeItQuick.github.io' or 'CodeItQuick/blackjack-ensemble-blue'")
     },
-    (params) => getDirectoryLogs(params) as Promise<any>
+    (params) => getDirectoryLogs(params)
 )
 server.tool(
     "get-file-content",
     "Get a files current content",
     {
         filename: z.string().describe("path of the file to retrieve the content for"),
-        repository: z.enum(['CodeItQuick/CodeItQuick.github.io', 'CodeItQuick/blackjack-ensemble-blue'])
-            .describe("the repository which is either 'CodeItQuick/CodeItQuick.github.io' or 'CodeItQuick/blackjack-ensemble-blue'")
+        repository: z.string()
+            .describe("the repository starting with 'CodeItQuick/'")
     },
-    (params) => getFileContent(params) as Promise<any>
+    (params) => getFileContent(params)
 )
 server.tool(
     "get-file-history",
     "Get a files past commit history and commit blame",
     {
         filename: z.string().describe("path of the file to retrieve the history for"),
-        repository: z.enum(['CodeItQuick/CodeItQuick.github.io', 'CodeItQuick/blackjack-ensemble-blue'])
-            .describe("the repository which is either 'CodeItQuick/CodeItQuick.github.io' or 'CodeItQuick/blackjack-ensemble-blue'")
+        repository: z.string()
+            .describe("the repository starting with 'CodeItQuick/'")
     },
-    (params) => getFileHistory(params) as Promise<any>
+    (params) => getFileHistory(params)
 )
 server.tool(
     "get-user-history",
     "Get a users past commit history and commit blame on a specific day",
     {
         username: z.enum(['CodeItQuick']).describe("the user to search for"),
-        exact_date: z.string()
-            .describe("Day to search for in format YYYY-MM-DD")
+        start_date: z.string()
+            .describe("Day to start search for in format YYYY-MM-DD"),
+        end_date: z.string()
+            .describe("Day to end search for in format YYYY-MM-DD"),
     },
-    (params) => getUserHistory(params) as Promise<any>
+    (params) => getUserHistory(params)
 )
 server.tool(
     "get-repository-history",
@@ -83,7 +85,7 @@ server.tool(
         since_date: z.string()
             .describe("Day to search for in format YYYY-MM-DD")
     },
-    (params) => getRepositoryHistory(params) as Promise<any>
+    (params) => getRepositoryHistory(params)
 )
 
 server.tool(
@@ -97,6 +99,7 @@ server.tool(
     },
     (params) => getSummaryLogs(params)
 )
+
 // Start the server
 async function main() {
     const transport = new StdioServerTransport();
