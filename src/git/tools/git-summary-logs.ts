@@ -1,5 +1,5 @@
 ﻿import { MongoClient } from "mongodb";
-import { IMongoClient } from "./IMongoClient";
+import { IMongoClient } from "../IMongoClient";
 import { CallToolResult } from "@modelcontextprotocol/sdk/types";
 
 const DB_NAME = "github_data";

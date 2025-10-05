@@ -1,6 +1,6 @@
 ﻿import { describe, it } from 'mocha';
 import { assert } from 'chai';
-import { getPatchLogs } from '../../src/git/git-patch-logs';
+import { getPatchLogs } from '../../src/git/tools/git-patch-logs';
 import { TestableMongoClient } from './MongoClientStubs/testable-mongo-client';
 
 describe('git-patch-logs', () => {

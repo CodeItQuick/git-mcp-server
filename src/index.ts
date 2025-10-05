@@ -1,14 +1,14 @@
 ﻿import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
 import {StdioServerTransport} from "@modelcontextprotocol/sdk/server/stdio.js";
 import {z} from "zod";
-import {getCommitMessageLogs} from "./git/git-message-logs.js";
-import {getPatchLogs} from "./git/git-patch-logs.js";
-import {getDirectoryLogs} from "./git/git-directory-logs.js";
-import {getFileContent} from "./git/git-file-content";
-import {getFileHistory} from "./git/git-file-history";
-import {getUserHistory} from "./git/git-user-history";
-import {getRepositoryHistory} from "./git/git-repository-history";
-import {getSummaryLogs} from "./git/git-summary-logs";
+import {getCommitMessageLogs} from "./git/tools/git-message-logs";
+import {getPatchLogs} from "./git/tools/git-patch-logs";
+import {getDirectoryLogs} from "./git/tools/git-directory-logs";
+import {getFileContent} from "./git/tools/git-file-content";
+import {getFileHistory} from "./git/tools/git-file-history";
+import {getUserHistory} from "./git/tools/git-user-history";
+import {getRepositoryHistory} from "./git/tools/git-repository-history";
+import {getSummaryLogs} from "./git/tools/git-summary-logs";
 
 // Create server instance
 const server = new McpServer({

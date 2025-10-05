@@ -1,4 +1,4 @@
-﻿import { getRepositoryHistory } from './git-repository-history';
+﻿import { getUserHistory } from '../tools/git-user-history';
 
 const main = async () => {
     // Get command line arguments
@@ -6,41 +6,41 @@ const main = async () => {
 
     if (args.includes('--help') || args.includes('-h')) {
         console.log(`
-Usage: node git-repository-history-runner.js [username] [exact-date]
+Usage: node git-user-history-runner.js [username] [since-date]
 
 Arguments:
   username     Optional. Username to search for (default: CodeItQuick)
-  exact-date   Required. Date in YYYY-MM-DD format
+  since-date   Required. Start date in YYYY-MM-DD format
 
 Examples:
-  node git-repository-history-runner.js CodeItQuick 2024-01-01
-  node git-repository-history-runner.js 2024-01-01
-  node git-repository-history-runner.js "Ted M. Young" 2024-06-01
+  node git-user-history-runner.js CodeItQuick 2024-01-01
+  node git-user-history-runner.js 2024-01-01
+  node git-user-history-runner.js "Ted M. Young" 2024-06-01
 
 Note:
-  Searches across all repositories to find which ones the user was active in on the specified date.
+  Searches across all repositories for the specified user's commits.
 `);
         return;
     }
 
-    let exactDate: string;
+    let sinceDate: string;
 
     // Parse arguments - flexible order
     if (args.length === 1) {
-        // [exact-date] only
-        exactDate = args[0];
+        // [since-date] only
+        sinceDate = args[0];
     } else if (args.length === 2) {
-        // [username] [exact-date]
-        exactDate = args[1];
+        // [username] [since-date]
+        sinceDate = args[1];
     } else {
         console.error('Error: Invalid number of arguments. Use --help for usage information.');
         process.exit(1);
     }
 
     try {
-        const result = await getRepositoryHistory({
+        const result = await getUserHistory({
             username: 'CodeItQuick',
-            since_date: exactDate
+            start_date: sinceDate
         });
 
         console.log(result.content[0].text);
@@ -52,4 +52,3 @@ Note:
 };
 
 main();
-

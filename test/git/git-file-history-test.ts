@@ -1,6 +1,6 @@
 ﻿import { describe, it } from 'mocha';
 import { assert } from 'chai';
-import { getFileHistory } from '../../src/git/git-file-history';
+import { getFileHistory } from '../../src/git/tools/git-file-history';
 import { TestableMongoClient } from './MongoClientStubs/testable-mongo-client';
 
 describe('git-file-history', () => {

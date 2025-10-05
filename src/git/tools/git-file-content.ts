@@ -1,8 +1,9 @@
 ﻿import {  MongoClient } from "mongodb";
-import { IMongoClient } from "./IMongoClient";
+import { IMongoClient } from "../IMongoClient";
+import { CallToolResult } from "@modelcontextprotocol/sdk/types";
 
 export const getFileContent = async (
-    file: { filename: string, repository: 'CodeItQuick/CodeItQuick.github.io' | 'CodeItQuick/blackjack-ensemble-blue' } | undefined,
+    file: { filename: string, repository: string; } | undefined,
     client: IMongoClient = new MongoClient("mongodb://localhost:27017/") as unknown as IMongoClient
 ) => {
     const DB_NAME = "github_data";

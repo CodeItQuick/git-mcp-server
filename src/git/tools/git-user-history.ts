@@ -1,22 +1,25 @@
 ﻿import { MongoClient } from "mongodb";
-import { IMongoClient } from "./IMongoClient";
+import { IMongoClient } from "../IMongoClient";
+import { CallToolResult } from "@modelcontextprotocol/sdk/types";
 
 const DB_NAME = "github_data";
-const DIFFS_COLLECTION = "commit_diffs";
+const DIFFS_COLLECTION = "commit_summaries";
 
 export const getUserHistory = async (
     userQuery: {
         username: 'CodeItQuick',
-        exact_date: string
+        start_date: string,
+        end_date: string
     } | undefined,
     client: IMongoClient = new MongoClient("mongodb://localhost:27017/") as unknown as IMongoClient
-) => {
-    if (!userQuery?.exact_date) {
+): Promise<CallToolResult> => {
+    if (!userQuery?.start_date) {
         return {
             content: [{
                 type: "text",
                 text: `Error: since_date parameter is required. Use format: YYYY-MM-DD`
-            }]
+            }],
+            isError: true
         };
     }
 
@@ -26,22 +29,21 @@ export const getUserHistory = async (
         const collection = db.collection(DIFFS_COLLECTION);
 
         const username = userQuery.username || "CodeItQuick";
-        const exactDate = new Date(userQuery.exact_date)
+        const exactDate = new Date(userQuery.start_date)
 
         if (isNaN(exactDate.getTime())) {
             return {
                 content: [{
                     type: "text",
                     text: `Error: Invalid date format '${exactDate}'. Use format: YYYY-MM-DD`
-                }]
+                }],
+                isError: true
             };
         }
 
         // Query commits by the specified user since the given date across all repositories
         let nextDay = new Date(exactDate);
         nextDay.setDate(exactDate.getDate() + 1)
-        console.log(exactDate.toISOString())
-        console.log(nextDay.toISOString())
         const commits = await collection.find({
             author: username, // Case-insensitive match
             date: { $gte: exactDate.toISOString(), $lt: nextDay.toISOString() }
@@ -76,7 +78,7 @@ export const getUserHistory = async (
                    // `Patch Content: \n ${patchContent}\n`;
         });
 
-        const summary = `User History for '${username}' across all repositories since ${userQuery.exact_date}:\n` +
+        const summary = `User History for '${username}' across all repositories since ${userQuery.start_date}:\n` +
                        `Found ${commits.length} commits\n\n` +
                        userHistory.join('\n');
 

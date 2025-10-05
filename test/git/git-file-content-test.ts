@@ -1,6 +1,6 @@
 ﻿import { describe, it } from 'mocha';
 import { assert } from 'chai';
-import { getFileContent } from '../../src/git/git-file-content';
+import { getFileContent } from '../../src/git/tools/git-file-content';
 import { TestableMongoClient } from './MongoClientStubs/testable-mongo-client';
 
 describe('git-file-content', () => {

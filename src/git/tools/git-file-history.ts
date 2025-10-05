@@ -1,11 +1,11 @@
 ﻿import { MongoClient } from "mongodb";
-import { IMongoClient } from "./IMongoClient";
+import { IMongoClient } from "../IMongoClient";
 
 const DB_NAME = "github_data";
 const DIFFS_COLLECTION = "commit_diffs";
 
 export const getFileHistory = async (
-    file: { filename: string, repository: 'CodeItQuick/CodeItQuick.github.io' | 'CodeItQuick/blackjack-ensemble-blue' } | undefined,
+    file: { filename: string, repository: string; } | undefined,
     client: IMongoClient = new MongoClient("mongodb://localhost:27017/") as unknown as IMongoClient
 ) => {
     if (file?.repository === undefined) {

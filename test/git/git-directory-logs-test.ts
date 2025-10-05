@@ -1,6 +1,6 @@
 ﻿import { describe, it } from 'mocha';
 import { assert } from 'chai';
-import { getDirectoryLogs } from '../../src/git/git-directory-logs';
+import { getDirectoryLogs } from '../../src/git/tools/git-directory-logs';
 import { TestableMongoClient } from './MongoClientStubs/testable-mongo-client';
 
 describe('git-directory-logs', () => {

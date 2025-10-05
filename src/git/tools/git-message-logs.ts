@@ -1,5 +1,6 @@
 ﻿import { MongoClient } from "mongodb";
-import { IMongoClient } from "./IMongoClient";
+import { IMongoClient } from "../IMongoClient";
+import { CallToolResult } from "@modelcontextprotocol/sdk/types";
 
 export const getCommitMessageLogs = async (
     days: { number_days: number, repository: 'CodeItQuick/CodeItQuick.github.io' | 'CodeItQuick/blackjack-ensemble-blue' } | undefined,

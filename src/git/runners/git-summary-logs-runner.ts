@@ -1,4 +1,4 @@
-﻿import {getSummaryLogs} from "./git-summary-logs";
+﻿import {getSummaryLogs} from "../tools/git-summary-logs";
 
 getSummaryLogs({
     repository: "CodeItQuick/blackjack-ensemble-blue",

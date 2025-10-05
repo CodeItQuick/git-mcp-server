@@ -1,5 +1,6 @@
 ﻿import { MongoClient } from "mongodb";
-import { IMongoClient } from "./IMongoClient";
+import { IMongoClient } from "../IMongoClient";
+import { CallToolResult } from "@modelcontextprotocol/sdk/types";
 
 const DB_NAME = "github_data";
 const DIFFS_COLLECTION = "commit_diffs";
@@ -10,7 +11,7 @@ export const getRepositoryHistory = async (
         since_date: string
     } | undefined,
     client: IMongoClient = new MongoClient("mongodb://localhost:27017/") as unknown as IMongoClient
-) => {
+): Promise<CallToolResult> => {
     if (!userQuery?.since_date) {
         return {
             content: [{
