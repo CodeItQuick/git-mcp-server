@@ -40,8 +40,8 @@ server.tool(
     "Get project files within a directory for the project",
     {
         directory: z.string().describe("path of the files to retrieve. Empty string represents the root directory."),
-        repository: z.enum(['CodeItQuick/CodeItQuick.github.io', 'CodeItQuick/blackjack-ensemble-blue'])
-            .describe("the repository which is either 'CodeItQuick/CodeItQuick.github.io' or 'CodeItQuick/blackjack-ensemble-blue'")
+        repository: z.string()
+            .describe("the repository starting with 'CodeItQuick/'")
     },
     (params) => getDirectoryLogs(params)
 )
