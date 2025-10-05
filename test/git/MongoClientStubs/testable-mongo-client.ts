@@ -67,12 +67,18 @@ export class TestableMongoClient implements IMongoClient {
         }
     ];
 
+    private mockSummaries: any[] = [];
+
     setMockFiles(files: any[]) {
         this.mockFiles = files;
     }
 
     setMockCommits(commits: any[]) {
         this.mockCommits = commits;
+    }
+
+    setMockSummaries(summaries: any[]) {
+        this.mockSummaries = summaries;
     }
 
     async connect(): Promise<void> {
@@ -119,6 +125,23 @@ export class TestableMongoClient implements IMongoClient {
                                 matches = matches && commit.files?.some((file: any) =>
                                     file.filename === query["files.filename"]
                                 );
+                            }
+
+                            return matches;
+                        });
+                    } else if (collectionName === "commit_summaries") {
+                        // Handle summary queries for git-summary-logs
+                        filteredData = this.mockSummaries.filter(summary => {
+                            let matches = summary.repository === query.repository;
+
+                            // Handle date range filtering for git-summary-logs
+                            if (query.date) {
+                                if (query.date.$gte) {
+                                    matches = matches && summary.date >= query.date.$gte;
+                                }
+                                if (query.date.$lt) {
+                                    matches = matches && summary.date < query.date.$lt;
+                                }
                             }
 
                             return matches;
