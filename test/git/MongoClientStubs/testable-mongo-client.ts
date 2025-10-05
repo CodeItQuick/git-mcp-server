@@ -130,11 +130,21 @@ export class TestableMongoClient implements IMongoClient {
                             return matches;
                         });
                     } else if (collectionName === "commit_summaries") {
-                        // Handle summary queries for git-summary-logs
+                        // Handle summary queries for git-summary-logs and git-user-history
                         filteredData = this.mockSummaries.filter(summary => {
-                            let matches = summary.repository === query.repository;
+                            let matches = true;
 
-                            // Handle date range filtering for git-summary-logs
+                            // Filter by repository (for git-summary-logs)
+                            if (query.repository !== undefined) {
+                                matches = matches && summary.repository === query.repository;
+                            }
+
+                            // Filter by author (for git-user-history)
+                            if (query.author !== undefined) {
+                                matches = matches && summary.author === query.author;
+                            }
+
+                            // Handle date range filtering for git-summary-logs and git-user-history
                             if (query.date) {
                                 if (query.date.$gte) {
                                     matches = matches && summary.date >= query.date.$gte;
