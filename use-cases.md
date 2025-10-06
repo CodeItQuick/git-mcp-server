@@ -17,6 +17,9 @@ This document outlines practical use cases for the Git MCP server, demonstrating
 12. [Code Archaeology and Blame Analysis](#code-archaeology-and-blame-analysis)
 13. [Regression Investigation](#regression-investigation)
 14. [Knowledge Transfer and Documentation](#knowledge-transfer-and-documentation)
+15. [Developer Productivity Analysis](#developer-productivity-analysis)
+16. [Repository Health Monitoring](#repository-health-monitoring)
+17. [AI-Generated Work Summaries](#ai-generated-work-summaries)
 
 ## Code Review and Analysis
 
@@ -382,6 +385,276 @@ AI generates a diff of documentation changes and suggests updates
 - Improves accuracy and reliability of project documentation
 - Facilitates better onboarding and knowledge transfer
 - Enhances overall code quality and maintainability
+
+## Developer Productivity Analysis
+
+### Use Case: Individual Contributor Insights
+**Scenario**: A team lead wants to understand a developer's contribution patterns, areas of expertise, and recent focus areas for performance reviews or project allocation.
+
+**MCP Tools Used**:
+- `get-user-history` - Get comprehensive commit history for a specific developer
+- `get-commit-patch-logs` - Analyze the depth and complexity of contributions
+- `get-directory-filenames` - Identify areas of the codebase the developer works in
+
+**Example Workflow**:
+```
+Tech Lead: "Can you provide an overview of Sarah's contributions over the last quarter? I need to understand her focus areas and impact."
+
+AI uses get-user-history(author="sarah@company.com", days=90) to gather all commits
+AI analyzes commit frequency, file types, and affected modules
+AI uses get-commit-patch-logs to assess code complexity and change magnitude
+AI generates report showing:
+- Primary areas of contribution (e.g., frontend, backend, testing)
+- Commit patterns and consistency
+- Notable features or bug fixes completed
+- Collaboration patterns with other team members
+```
+
+**Benefits**:
+- Objective data for performance reviews
+- Identifies developer expertise and specializations
+- Helps with project allocation and team balancing
+- Recognizes contributions across different work types
+- Supports career development conversations
+
+### Use Case: Mentorship and Growth Tracking
+**Scenario**: A manager wants to track a junior developer's growth and provide targeted mentorship.
+
+**MCP Tools Used**:
+- `get-user-history` - Track developer contributions over time
+- `get-commit-message-logs` - Review commit quality and messaging
+- `get-commit-patch-logs` - Assess code complexity evolution
+
+**Example Workflow**:
+```
+Manager: "Show me how Alex's contributions have evolved since they joined the team 6 months ago."
+
+AI uses get-user-history(author="alex@company.com", days=180) to get complete history
+AI analyzes progression in:
+- Commit size and complexity
+- Areas of the codebase they're working in
+- Frequency of reverts or fixes to their own code
+- Collaboration patterns with senior developers
+AI provides growth trajectory and mentorship recommendations
+```
+
+**Benefits**:
+- Tracks skill development over time
+- Identifies areas needing additional support
+- Celebrates progress and achievements
+- Guides mentorship focus areas
+- Supports targeted training recommendations
+
+## Repository Health Monitoring
+
+### Use Case: Long-Term Repository Trends
+**Scenario**: An engineering director wants to understand the overall health and evolution of a repository over the past year to inform strategic planning.
+
+**MCP Tools Used**:
+- `get-repository-history` - Get comprehensive commit history across all contributors
+- `get-user-history` - Analyze individual contributor patterns
+- `get-commit-message-logs` - Review commit messaging quality and patterns
+
+**Example Workflow**:
+```
+Engineering Director: "Provide a comprehensive health report for our main repository over the last year."
+
+AI uses get-repository-history(days=365) to gather all commits
+AI analyzes:
+- Commit frequency trends over time
+- Number of active contributors per month
+- Code churn rates and stability patterns
+- Distribution of work across team members
+- Peak activity periods and quiet periods
+AI generates executive summary with:
+- Repository velocity trends
+- Team scaling indicators
+- Code stability metrics
+- Contributor diversity analysis
+```
+
+**Benefits**:
+- Strategic planning based on historical data
+- Identifies capacity constraints or bottlenecks
+- Tracks team growth and scaling effectiveness
+- Highlights periods of instability or high churn
+- Informs hiring and resource allocation decisions
+
+### Use Case: Codebase Stability Assessment
+**Scenario**: Before a major release, the team needs to assess repository stability and identify potential risk areas.
+
+**MCP Tools Used**:
+- `get-repository-history` - Analyze recent commit patterns
+- `get-commit-patch-logs` - Identify files with high change frequency
+- `get-directory-filenames` - Map stability across different modules
+
+**Example Workflow**:
+```
+Release Manager: "Assess the stability of our codebase over the last 30 days before we proceed with the v2.0 release."
+
+AI uses get-repository-history(days=30) to get recent activity
+AI identifies:
+- Files changed most frequently (potential hotspots)
+- Modules with high commit density
+- Late-breaking changes that need extra testing
+- Areas with multiple contributors (coordination risk)
+AI provides stability report with risk assessment and testing recommendations
+```
+
+**Benefits**:
+- Data-driven release confidence
+- Identifies high-risk areas needing extra testing
+- Improves release planning and timing
+- Reduces production incidents
+- Supports go/no-go decisions
+
+### Use Case: Team Collaboration Patterns
+**Scenario**: An agile coach wants to analyze how the team collaborates and identify opportunities to improve cross-functional work.
+
+**MCP Tools Used**:
+- `get-repository-history` - Get all team activity
+- `get-user-history` - Analyze individual contributor patterns
+- `get-commit-patch-logs` - Identify shared file ownership
+
+**Example Workflow**:
+```
+Agile Coach: "Analyze our team's collaboration patterns over the last 2 months. Are we working in silos or collaborating effectively?"
+
+AI uses get-repository-history(days=60) to get complete team activity
+AI uses get-user-history for each team member to analyze individual patterns
+AI identifies:
+- Files/modules worked on by multiple team members
+- Knowledge silos (code only one person touches)
+- Cross-functional collaboration indicators
+- Pair programming or co-authorship patterns
+AI provides collaboration report with recommendations for improving knowledge sharing
+```
+
+**Benefits**:
+- Identifies knowledge silos and single points of failure
+- Encourages cross-functional collaboration
+- Supports team building initiatives
+- Improves bus factor and knowledge distribution
+- Guides pairing and mob programming sessions
+
+## AI-Generated Work Summaries
+
+### Use Case: Automated Sprint Retrospectives
+**Scenario**: At the end of each sprint, the team needs to review accomplishments and prepare retrospective materials.
+
+**MCP Tools Used**:
+- `get-summary-repository-logs` - Get AI-generated summaries of all work
+- `get-user-history` - Individual contributor summaries
+- `get-repository-history` - Overall sprint activity
+
+**Example Workflow**:
+```
+Scrum Master: "Generate a comprehensive summary of everything the team accomplished in the last 2 weeks for our sprint retrospective."
+
+AI uses get-summary-repository-logs(start_date="2025-09-23", end_date="2025-10-06") 
+AI retrieves pre-generated AI summaries of all commits
+AI organizes summaries by:
+- Feature completions
+- Bug fixes and improvements
+- Refactoring and technical debt
+- Infrastructure and tooling changes
+AI generates narrative sprint summary with highlights and metrics
+```
+
+**Benefits**:
+- Eliminates manual summary writing
+- Provides consistent, high-quality summaries
+- Captures work that might otherwise be overlooked
+- Saves significant time in retrospective preparation
+- Creates historical record of sprint accomplishments
+
+### Use Case: Executive Status Reports
+**Scenario**: A CTO needs to provide monthly status updates to the board about engineering progress across multiple areas.
+
+**MCP Tools Used**:
+- `get-summary-repository-logs` - Get AI summaries across date ranges
+- `get-repository-history` - Overall activity metrics
+- `get-user-history` - Team contribution patterns
+
+**Example Workflow**:
+```
+CTO: "Create an executive summary of all engineering work completed in September 2025."
+
+AI uses get-summary-repository-logs(start_date="2025-09-01", end_date="2025-09-30")
+AI aggregates AI-generated summaries across the month
+AI organizes by strategic initiatives:
+- Product features delivered
+- Infrastructure improvements
+- Technical debt reduction
+- Security and compliance work
+AI generates executive report with narrative summaries and key metrics
+```
+
+**Benefits**:
+- High-level summaries without technical jargon
+- Connects engineering work to business outcomes
+- Demonstrates team productivity and impact
+- Supports board communications and stakeholder updates
+- Provides consistent monthly reporting format
+
+### Use Case: Personal Work Journaling
+**Scenario**: A developer wants to maintain a journal of their work for self-review, resume building, or performance documentation.
+
+**MCP Tools Used**:
+- `get-summary-repository-logs` - Get AI summaries of personal work
+- `get-user-history` - Personal commit history
+- `get-commit-patch-logs` - Detailed work analysis
+
+**Example Workflow**:
+```
+Developer: "Summarize all the work I completed in Q3 2025 for my performance self-review."
+
+AI uses get-summary-repository-logs(author="me@company.com", start_date="2025-07-01", end_date="2025-09-30")
+AI retrieves AI-generated summaries of developer's commits
+AI organizes achievements by:
+- Features implemented
+- Bugs resolved
+- Code quality improvements
+- Collaboration and code reviews
+AI generates personal accomplishment report with specific examples
+```
+
+**Benefits**:
+- Maintains ongoing record of accomplishments
+- Simplifies performance review preparation
+- Provides concrete examples for resume updates
+- Tracks career growth and skill development
+- Reduces recall bias during reviews
+
+### Use Case: Knowledge Base Article Generation
+**Scenario**: The documentation team needs to create knowledge base articles explaining recent system changes and improvements.
+
+**MCP Tools Used**:
+- `get-summary-repository-logs` - Get detailed AI summaries of changes
+- `get-commit-patch-logs` - Technical details of implementations
+- `get-file-content` - Current state of changed files
+
+**Example Workflow**:
+```
+Technical Writer: "Help me create a knowledge base article about the authentication system changes made in the last month."
+
+AI uses get-summary-repository-logs(start_date="2025-09-01", end_date="2025-10-01")
+AI filters for authentication-related commits
+AI uses summaries to understand the context and purpose of changes
+AI uses get-commit-patch-logs and get-file-content for technical details
+AI generates draft KB article with:
+- Overview of changes
+- User-facing impacts
+- Technical implementation details
+- Migration guide if needed
+```
+
+**Benefits**:
+- Accelerates documentation creation
+- Ensures technical accuracy from actual code
+- Captures developer intent from commit summaries
+- Reduces documentation lag behind code changes
+- Improves user support with timely updates
 
 ## Advanced Integration Scenarios
 

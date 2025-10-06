@@ -6,14 +6,14 @@ const DB_NAME = "github_data";
 const SUMMARY_COLLECTION = "commit_summaries";
 
 export const getSummaryLogs = async (
-    file: { repository: string; start_date: string; end_date: string; author: string; } | undefined,
+    file: { start_date: string; end_date: string; author: string; } | undefined,
     client: IMongoClient = new MongoClient("mongodb://localhost:27017/") as unknown as IMongoClient
 ): Promise<CallToolResult> => {
-    if (file?.repository === undefined) {
+    if (file?.author === undefined) {
         return {
             content: [{
                 type: "text",
-                text: `Error retrieving repository context from undefined`
+                text: `Error retrieving author context from undefined`
             }],
             isError: true
         };
@@ -28,7 +28,6 @@ export const getSummaryLogs = async (
         // Query summaries that modified the specified file
         const summaries = await collection.find({
             author: file?.author,
-            repository: file?.repository,
             date: { $gte: new Date(file.start_date).toISOString(), $lt: new Date(file.end_date).toISOString() }
         }).sort({ date: -1 }).toArray();
 
@@ -43,7 +42,7 @@ export const getSummaryLogs = async (
         return {
             content: [{
                 type: "text",
-                text: `Summary notes for repository "${file?.repository}":\n\n` +
+                text: `Summary notes for user "${file?.author}":\n\n` +
                     summaryLogs.join('\n---\n')
             }]
         };

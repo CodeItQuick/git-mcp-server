@@ -67,7 +67,7 @@ server.tool(
 )
 server.tool(
     "get-user-history",
-    "Get a users past commit history and commit blame on a specific day",
+    "Get a users past commit history. Returns additions, deletions, files changed, repository, commit sha, author, message, and date.",
     {
         username: z.enum(['CodeItQuick']).describe("the user to search for"),
         start_date: z.string()
@@ -92,11 +92,9 @@ server.tool(
     "get-summary-repository-logs",
     "Get AI summary logs for a particular repository given a start date and end date in format YYYY-MM-DD. Gives commit sha, author, date of commit, AI summary, and original commit message.",
     {
-        start_date: z.string().describe("the start date to query in format YYYY-MM-DD"),
-        end_date: z.string().describe("the end date to query in format YYYY-MM-DD"),
         author: z.string().describe('the author of the commit. Should usually be CodeItQuick.'),
-        repository: z.string()
-            .describe("the repository starting with 'CodeItQuick/'")
+        start_date: z.string().describe("the start date to query in format YYYY-MM-DD"),
+        end_date: z.string().describe("the end date to query in format YYYY-MM-DD")
     },
     (params) => getSummaryLogs(params)
 )
